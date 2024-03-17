@@ -1,0 +1,69 @@
+{
+   "name": "ImperialWizard",
+      "version": "2.0.0",
+      "author": [
+         "Ian Thomas <ian@wildwinter.net>",
+      "Clive Evans <cliveevans@ntlworld.com"
+      ],
+      "descriptionmsg": "imperial wizard",
+      "namemsg": "imperial wizard",
+      "license-name": "CC0-1.0",
+      "type": "skin",
+      "requires": {
+         "MediaWiki": ">= 1.41.0"
+      },
+      "ValidSkinNames": {
+         "imperialwizard": {
+            "class": "SkinImperialWizard",
+            "args": [
+            {
+               "scripts": [
+                  "skins.imperialwizard.js"
+               ],
+               "styles": [
+                  "skins.imperialwizard.styles"
+               ],
+               "name": "ImperialWizard",
+               "template": "ImperialWizardTemplate"
+            }
+            ]
+         }
+      },
+      "ResourceModules": {
+         "skins.imperialwizard.styles": {
+            "class": "ResourceLoaderSkinModule",
+            "features": {
+               "normalize": true,
+               "elements": true,
+               "content": true,
+               "content-links": true,
+               "interface": true,
+               "logo": true,
+               "legacy": true
+            },
+            "styles": {
+               "css/bootstrap.css": {
+                  "media": "screen, print"
+               },
+               "css/bootstrap-responsive.css": {
+                  "media": "screen, print"
+               },
+               "css/site.css": {
+                  "media": "screen, print"
+               }
+            }
+         },
+         "skins.imperialwizard.scripts": {
+            "targets": ["desktop", "mobile"],
+            "scripts": ["js/site.js", "js/bootstrap.js"]
+         }
+      },
+      "ResourceFileModulePaths": {
+         "localBasePath": "",
+         "remoteSkinPath": "ImperialWizard"
+      },
+      "AutoloadClasses": {
+         "SkinImperialWizard": "ImperialWizard.php"
+      },
+      "manifest_version": 2
+}
