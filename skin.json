@@ -1,69 +1,81 @@
 {
-   "name": "ImperialWizard",
-      "version": "2.0.0",
-      "author": [
-         "Ian Thomas <ian@wildwinter.net>",
-      "Clive Evans <cliveevans@ntlworld.com"
+  "name": "ImperialWizard",
+  "version": "2.0.0",
+  "author": [
+    "Ian Thomas <ian@wildwinter.net>",
+    "Clive Evans <cliveevans@ntlworld.com"
+  ],
+  "descriptionmsg": "imperial wizard",
+  "namemsg": "imperial wizard",
+  "license-name": "CC BY-SA 4.0",
+  "type": "skin",
+  "requires": {
+    "MediaWiki": ">= 1.39.0"
+  },
+  "ValidSkinNames": {
+    "imperialwizard": {
+      "class": "SkinImperialWizard",
+      "args": [
+        {
+          "scripts": [
+            "skins.imperialwizard.scripts"
+          ],
+          "styles": [
+            "skins.imperialwizard.styles"
+          ],
+          "name": "ImperialWizard",
+          "template": "ImperialWizardTemplate",
+          "bodyOnly":  true
+        }
+      ]
+    }
+  },
+  "ResourceModules": {
+    "skins.imperialwizard.styles": {
+      "class": "ResourceLoaderSkinModule",
+      "features": {
+        "normalize": true,
+        "elements": true,
+        "logo": true,
+        "content-media": true,
+        "content-links": true,
+        "content-links-external": false,
+        "interface": true,
+        "interface-message-box": true,
+        "interface-category": true,
+        "content-tables": true,
+        "i18n-ordered-lists": true,
+        "i18n-all-lists-margins": true,
+        "i18n-headings": true
+      },
+      "targets": [
+        "desktop",
+        "mobile"
       ],
-      "descriptionmsg": "imperial wizard",
-      "namemsg": "imperial wizard",
-      "license-name": "CC0-1.0",
-      "type": "skin",
-      "requires": {
-         "MediaWiki": ">= 1.41.0"
-      },
-      "ValidSkinNames": {
-         "imperialwizard": {
-            "class": "SkinImperialWizard",
-            "args": [
-            {
-               "scripts": [
-                  "skins.imperialwizard.js"
-               ],
-               "styles": [
-                  "skins.imperialwizard.styles"
-               ],
-               "name": "ImperialWizard",
-               "template": "ImperialWizardTemplate"
-            }
-            ]
-         }
-      },
-      "ResourceModules": {
-         "skins.imperialwizard.styles": {
-            "class": "ResourceLoaderSkinModule",
-            "features": {
-               "normalize": true,
-               "elements": true,
-               "content": true,
-               "content-links": true,
-               "interface": true,
-               "logo": true,
-               "legacy": true
-            },
-            "styles": {
-               "css/bootstrap.css": {
-                  "media": "screen, print"
-               },
-               "css/bootstrap-responsive.css": {
-                  "media": "screen, print"
-               },
-               "css/site.css": {
-                  "media": "screen, print"
-               }
-            }
-         },
-         "skins.imperialwizard.scripts": {
-            "targets": ["desktop", "mobile"],
-            "scripts": ["js/site.js", "js/bootstrap.js"]
-         }
-      },
-      "ResourceFileModulePaths": {
-         "localBasePath": "",
-         "remoteSkinPath": "ImperialWizard"
-      },
-      "AutoloadClasses": {
-         "SkinImperialWizard": "ImperialWizard.php"
-      },
-      "manifest_version": 2
+      "styles": [
+        "css/bootstrap.css",
+        "css/bootstrap-responsive.css",
+        "css/site.css"
+      ]
+    },
+    "skins.imperialwizard.scripts": {
+      "targets": [
+        "desktop",
+        "mobile"
+      ],
+      "scripts": [
+        "js/jquery-1.7.1.min.js",
+        "js/site.js",
+        "js/bootstrap.js"
+      ]
+    }
+  },
+  "ResourceFileModulePaths": {
+    "localBasePath": "",
+    "remoteSkinPath": "ImperialWizard"
+  },
+  "AutoloadClasses": {
+    "SkinImperialWizard": "ImperialWizard.php"
+  },
+  "manifest_version": 2
 }

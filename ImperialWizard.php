@@ -9,14 +9,14 @@
  * @Author Ian Thomas <ian@wildwinter.net>
  */
 
-if( !defined( 'MEDIAWIKI' ) ) {
-   die( -1 );
+if (!defined('MEDIAWIKI')) {
+    die(-1);
 }
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-
+use MediaWiki\Logger\LoggerFactory;
 
 /**
  * Inherit main code from SkinTemplate, set the CSS and template filter.
@@ -24,9 +24,8 @@ use MediaWiki\Revision\SlotRecord;
  * @package MediaWiki
  * @subpackage Skins
  */
-
-
-class SkinImperialWizard extends SkinTemplate {
+class SkinImperialWizard extends SkinTemplate
+{
 }
 
 /**
@@ -34,348 +33,344 @@ class SkinImperialWizard extends SkinTemplate {
  * @package MediaWiki
  * @subpackage Skins
  */
-class ImperialWizardTemplate extends BaseTemplate {
-   /**
-    * @var Cached skin object
-    */
-   var $skin;
+class ImperialWizardTemplate extends BaseTemplate
+{
+    /**
+     * @var Cached skin object
+     */
+    var $skin;
 
-   function breakTitle( &$link, &$title)
-   {
-      if (preg_match('/(.+)\|(.+)/',$link,$match))
-      {
-         $link=$match[1];
-         $title=$match[2];
-      }
-      else
-      {
-         $title=$link;
-      }
-   }
+    function breakTitle(&$link, &$title)
+    {
+        if (preg_match('/(.+)\|(.+)/', $link, $match)) {
+            $link = $match[1];
+            $title = $match[2];
+        } else {
+            $title = $link;
+        }
+    }
 
-   function getCredits(){
-      return $this->data['credits'];
-   }
+    function getCredits()
+    {
+        return $this->data['credits'];
+    }
 
-   function parseMenu($pageTitle)
-   {
-      $nav=array();
-      $data = $this->getPageRawText($pageTitle);
-      foreach(explode("\n", $data) as $line)
-      {
-         if(trim($line) == '') continue;
+    function parseMenu($pageTitle)
+    {
+        $nav = array();
+        $data = $this->getPageRawText($pageTitle);
+        foreach (explode("\n", $data) as $line) {
+            if (trim($line) == '') continue;
 
-         if(preg_match('/^\*\s*\[\[(.+)\]\]/', $line, $match))
-         {
-            $nav[] = array('title'=>$match[1], 'link'=>$match[1]);
-         }
-         elseif(preg_match('/\*\*\s*\[\[(.+)\]\]/', $line, $match))
-         {
-            $nav[count($nav)-1]['sublinks'][] = $match[1];
-         }
-         elseif(preg_match('/\*\*\s*\-\-/', $line, $match))
-         {
-            $nav[count($nav)-1]['sublinks'][] = 'sep';
-         }
-         elseif(preg_match('/\*\*\s*=\s*(.+)\s*\=/', $line, $match))
-         {
-            $nav[count($nav)-1]['sublinks'][] = '='.$match[1];
-         }
-         elseif(preg_match('/^\*\s*(.+)/', $line, $match))
-         {
-            $nav[] = array('title'=>$match[1]);
-         }
-         elseif(preg_match('/=\s*(.+)\s*=/',$line,$match))
-         {
-            $nav[]=array('section'=>$match[1]);
-         }
-      }
-
-      $out="";
-
-      foreach($nav as $topItem)
-      {
-         if (array_key_exists('section',$topItem))
-         {
-            $out.='<li class="nav-header">'.$topItem['section'].'</li>';
-            continue;
-         }
-         $link=$topItem['title'];
-         $this->breakTitle($link,$title);
-         $pageTitle = Title::newFromText($link);
-         if(array_key_exists('sublinks', $topItem))
-         {
-            $out.= '<li class="dropdown">';
-            $out.=  '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $title. '<b class="caret"></b></a>';
-            $out.=  '<ul class="dropdown-menu">';
-            foreach($topItem['sublinks'] as $subLink) {
-               if ($subLink=='sep')
-               {
-                  $out.='<li class="divider"> </li>';
-                  continue;
-               }
-               if ($subLink[0]=='=')
-               {
-                  $out.='<li class="nav-header">'.substr($subLink,1).'</li>';
-                  continue;
-               }
-               $this->breakTitle($subLink,$title);
-               $pageTitle = Title::newFromText($subLink);
-               $out.=  '<li><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a>';
+            if (preg_match('/^\*\s*\[\[(.+)\]\]/', $line, $match)) {
+                $nav[] = array('title' => $match[1], 'link' => $match[1]);
+            } elseif (preg_match('/\*\*\s*\[\[(.+)\]\]/', $line, $match)) {
+                $nav[count($nav) - 1]['sublinks'][] = $match[1];
+            } elseif (preg_match('/\*\*\s*\-\-/', $line, $match)) {
+                $nav[count($nav) - 1]['sublinks'][] = 'sep';
+            } elseif (preg_match('/\*\*\s*=\s*(.+)\s*\=/', $line, $match)) {
+                $nav[count($nav) - 1]['sublinks'][] = '=' . $match[1];
+            } elseif (preg_match('/^\*\s*(.+)/', $line, $match)) {
+                $nav[] = array('title' => $match[1]);
+            } elseif (preg_match('/=\s*(.+)\s*=/', $line, $match)) {
+                $nav[] = array('section' => $match[1]);
             }
-            $out.=  '</ul>';
-            $out.=  '</li>';
-         } else {
-            if(is_object($pageTitle)){
-               $out.=  '<li' . ($this->data['title'] == $link ? ' class="active"' : '') . '><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
+        }
+
+        $out = "";
+
+        foreach ($nav as $topItem) {
+            if (array_key_exists('section', $topItem)) {
+                $out .= '<li class="nav-header">' . $topItem['section'] . '</li>';
+                continue;
             }
-         }
-      }
-      return $out;
-   }
+            $link = $topItem['title'];
+            $this->breakTitle($link, $title);
+            $pageTitle = Title::newFromText($link);
+            if (array_key_exists('sublinks', $topItem)) {
+                $out .= '<li class="dropdown">';
+                $out .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $title . '<b class="caret"></b></a>';
+                $out .= '<ul class="dropdown-menu">';
+                foreach ($topItem['sublinks'] as $subLink) {
+                    if ($subLink == 'sep') {
+                        $out .= '<li class="divider"> </li>';
+                        continue;
+                    }
+                    if ($subLink[0] == '=') {
+                        $out .= '<li class="nav-header">' . substr($subLink, 1) . '</li>';
+                        continue;
+                    }
+                    $this->breakTitle($subLink, $title);
+                    $pageTitle = Title::newFromText($subLink);
+                    $out .= '<li><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a>';
+                }
+                $out .= '</ul>';
+                $out .= '</li>';
+            } else {
+                if (is_object($pageTitle)) {
+                    $out .= '<li' . ($this->data['title'] == $link ? ' class="active"' : '') . '><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
+                }
+            }
+        }
+        return $out;
+    }
 
-   /**
-    * Template filter callback for Bootstrap skin.
-    * Takes an associative array of data set from a SkinTemplate-based
-    * class, and a wrapper for MediaWiki's localization database, and
-    * outputs a formatted page.
-    *
-    * @access private
-    */        
-   public function execute() {
-      global $wgUser, $wgSitename, $wgCopyrightLink, $wgCopyright, $wgBootstrap, $wgArticlePath, $wgSiteCSS;
-      global $wgRequest;
+    /**
+     * Template filter callback for Bootstrap skin.
+     * Takes an associative array of data set from a SkinTemplate-based
+     * class, and a wrapper for MediaWiki's localization database, and
+     * outputs a formatted page.
+     *
+     * @access private
+     */
+    public function execute()
+    {
+        global $wgRequest;
 
-      $requestedAction = $wgRequest->getVal( 'action', 'view' );
-      $requestedTitle = $wgRequest->getVal('title');
+        $isLoggedIn = $this->getSkin()->getUser()->isRegistered();
 
-      $isEditing=(strcmp($requestedAction,'edit')==0);
-      $isMainPage=(strcasecmp($requestedTitle,'Main_Page')==0);
+        $requestedAction = $wgRequest->getVal('action', 'view');
 
-      $this->skin = $this->data['skin'];
-      $skin = $this->data['skin'];
+        $isEditing = (strcmp($requestedAction, 'edit') == 0);
 
-      $titleBar=$this->parseMenu('Imperial:TitleBar');
+        $this->skin = $this->data['skin'];
 
-      $title = $this->getSkin()->getTitle();
-      if ( strpos( $title, '/' ) === false ) 
-      {
-         $this->data['ImpWiztitle'] = $title;
-      }
-      else
-      {
-         $this->data['ImpWiztitle'] = strrchr( $title, '/' );
-      }
+        $title = $this->getSkin()->getTitle();
+        if (strpos($title, '/') === false) {
+            $this->data['ImpWiztitle'] = $title;
+        } else {
+            $this->data['ImpWiztitle'] = strrchr($title, '/');
+        }
 
-      $bc='';
-      if (isset($this->data['breadcrumbs']))
-      {
-         $bc=$this->data['breadcrumbs'];
-         $bc=str_replace('<a','<li><a',$bc);
-         $bc=str_replace('/a> &gt;','/a><span class="divider">/</span></li>',$bc);
-         $bc=str_replace('<strong','<li><strong',$bc);
-         $bc=preg_replace('/\/strong\>(.*)$/','/strong></li>',$bc); 
-      }
+        // Output HTML Page
+        $html = $this->getNavbarContent($isLoggedIn);
 
-      // Suppress warnings to prevent notices about missing indexes in $this->data
-      Wikimedia\AtEase\AtEase::suppressWarnings();
+        $html .= Html::openElement('div', ['id' => 'article', 'class' => 'container-fluid']);
+        $html .= Html::openElement('div', ['class' => 'row-fluid']); // row-fluid outer
+        $html .= Html::openElement('div', ['id' => 'leftbar', 'class' => 'span2']);
 
-      // Output HTML Page
-      $this->html( 'headelement' );
-      ?>
+        $logo = MediaWikiServices::getInstance()->getRepoGroup()->findFile(Title::makeTitle(NS_FILE, 'Logo.jpg'));
+        if ($logo) {
+            $html .= Html::rawElement('div', ['id' => 'logo'], Html::rawElement('img', ['src' => $logo . getURL()]));
+        }
 
-         <!-- Body content starts here -->  
+        if ($isLoggedIn) {
+            $html .= Html::rawElement('div', ['id' => 'pageButtons'], $this->renderPageButtons($isEditing));
+        }
 
-         <div class="navbar navbar-fixed-top">
-         <div class="navbar-inner">
-         <div class="container-fluid">
-         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-         <i class="icon-search icon-white"></i>
-         </a>
-         <a class="brand" href="<?php echo $this->data['nav_urls']['mainpage']['href'] ?>"><?php echo $wgSitename ?></a>
-         <div class="nav-collapse">
-         <form class="pull-right navbar-search" action="<?php $this->text( 'wgScript' ); ?>">
-         <input type='hidden' name="title" value="<?php $this->text( 'searchtitle' ) ?>" />
-         <?php echo $this->makeSearchInput( array( 'id' => 'searchInput' ) ); ?>
-         </form>
-         <ul class="nav"><?php echo $titleBar;?></ul>
-         <?php
-         if($wgUser->isLoggedIn())
-         {?>
-            <ul<?php $this->html('userlangattributes') ?> class="nav pull-right"><?php
-               if ( count( $this->data['personal_urls'] ) > 0 ) {
-                  ?>
-                     <li class="dropdown">
-                     <a class="dropdown-toggle" href="#" data-toggle="dropdown"><?php echo $wgUser->getName(); ?><b class="caret"></b></a>
-                     <ul class="dropdown-menu">
-                     <?php foreach($this->data['personal_urls'] as $item): ?>
-                     <li <?php echo $item['attributes'] ?>><a href="<?php echo htmlspecialchars($item['href']) ?>"<?php echo $item['key'] ?><?php if(!empty($item['class'])): ?> class="<?php echo htmlspecialchars($item['class']) ?>"<?php endif; ?>><?php echo htmlspecialchars($item['text']) ?></a></li>
-                     <?php endforeach; ?>
-                     </ul>
-                     </li>
-                     <?php
-               }
+        $html .= Html::rawElement('div', ['class' => 'well sidebar-nav'], $this->includePage('Imperial:LeftBar'));
 
-         }
-      ?>
-         </div><!--/.nav-collapse -->
-         </div>
-         </div>
-         </div>
+        $html .= Html::closeElement('div'); // span2
 
-         <div id="article" class="container-fluid">
-         <div class="row-fluid">
+        $html .= Html::openElement('div', ['class' => 'span10']);
 
-         <div id="leftbar" class="span2">
-         <?php
-         $logo = wfFindFile(Title::makeTitle(NS_IMAGE, 'Logo.jpg'));
-      if ($logo) {?>
-         <div id="logo">
-            <img src="<?php echo $logo->getURL();?>"/>
-            </div>  
-            <?php } ?>  
-            <?php if ($wgUser->isLoggedIn()){?>
-               <div id="pageButtons">
-                  <?php
-                  $this->renderPageButtons($isEditing);
-               ?>  </div>
-                  <?php } ?>
-                  <div class="well sidebar-nav">
-                  <?php 
-                  $this->includePage('Imperial:LeftBar');
-               ?>
-                  </div><!--/.well -->
-                  </div><!--/span-->
+        $html .= $this->getCategories();
+
+        $html .= Html::openElement('div', ['class' => 'row-fluid']);
+
+        $html .= $this->data['sitenotice'] ? Html::rawElement('div', ['class' => 'alert alert-block alert-message warning'], $this->data['sitenotice']) : '';
+
+        $html .= Html::openElement('div', ['id' => 'page-title', 'class' => 'page-header']);
+
+        $html .= Html::rawElement('h1', [],
+            $this->data['ImpWiztitle'] .
+            Html::rawElement('small', [], $this->html('subtitle'))
+        );
+
+        if (isset($this->data['breadcrumbs'])) {
+            $html .= Html::rawElement('ul', ['class' => 'breadcrumb'], $this->getBreadcrumbs());
+        }
+
+        $html .= Html::closeElement('div'); // page-header
+        $html .= '<!-- end page-header -->';
+        $html .= Html::closeElement('div'); // row-fluid
+
+        // the actual page content ...
+
+        $html .= Html::rawElement('div', ['class' => 'row-fluid'],
+            $this->get('bodytext') .
+            Html::rawElement('hr') .
+            Html::rawElement('small', [], $this->getCredits())
+        );
+
+        $html .= Html::closeElement('div'); // span10
+
+        $html .= Html::closeElement('div'); // row-fluid outer
+        $html .= Html::closeElement('div'); // container-fluid
+
+//        $html .= Html::rawElement('div', ['id' => 'footer', 'class' => 'container-fluid'], $this->includePage('Imperial:Footer'));
+
+        $html .= $this->html('dataAfterContent');
+        $html .= $this->getTrail();
 
 
-                  <div class="span10">
+        // srsly people? This is how we do this?
+        echo $html;
+    }
 
-                  <?php echo $this->getCategories();?>
+    function getPageRawText($title)
+    {
+        $pageTitle = Title::newFromText($title);
+        $page = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle($pageTitle);
+        if (!$pageTitle->exists()) {
+            return 'Create the page [[' . $title . ']]';
+        } else {
+            // $page = $this->getSkin()->getWikiPage();
+            $revision = $page->getRevisionRecord();
+            $content = $revision->getContent(SlotRecord::MAIN, RevisionRecord::RAW);
+            return $content->getText();
+        }
+    }
 
-                  <div class="row-fluid">
-                  <?php if( $this->data['sitenotice'] ) { ?><div id="siteNotice" class="alert alert-block alert-message warning"><?php $this->html('sitenotice') ?></div><?php } ?>
+    function includePage($title)
+    {
+        $parser = MediaWikiServices::getInstance()->getParser();
+        $pageTitle = Title::newFromText($title);
+        if (!$pageTitle->exists()) {
+            return 'The page [[' . $title . ']] was not found.';
+        } else {
+            $page = WikiPage::factory($pageTitle);
+            $revision = $page->getRevisionRecord();
+            $user = $this->getSkin()->getUser();
+            $content = $revision->getContent(SlotRecord::MAIN, RevisionRecord::FOR_THIS_USER, $this->getSkin()->getAuthority());
 
-                  <div id="page-title" class="page-header">
-                  <h1><?php echo $this->data['ImpWiztitle']; ?> <small><?php $this->html('subtitle') ?></small></h1>
-                  <?php if ($this->data['breadcrumbs']) { ?>
-                     <ul class="breadcrumb"><?php echo $bc;?></ul>
-                        <?php } ?>
-                        </div>
+            $wgParserOptions = new ParserOptions($user);
+            $parserOutput = $parser->parse($content->getText(), $pageTitle, $wgParserOptions);
+            return $parserOutput->getText();
+        }
+    }
 
-                        </div>
+    function renderPageButton($key, $icon)
+    {
+        if (!array_key_exists($key, $this->data['content_actions']))
+            return;
+        $action = $this->data['content_actions'][$key];
+        echo '<a class="btn" href="' . htmlspecialchars($action['href']) . '" title="' . htmlspecialchars($action['text']) . '"><i class="' . $icon . '"></i></a>';
+    }
 
-                        <!-- Page content starts here -->  
-                        <div class="row-fluid">
-                        <?php $this->html( 'bodytext' ) ?>
-                        <?PHP echo '<hr/><small>'.$this->getCredits().'</small>'; ?>
-                        </div>
-                        </div><!--/span-->
-                        </div><!--/row-->
+    function renderPageButtons($isEditing)
+    {
+        if (count($this->data['content_actions']) == 0)
+            return false;
 
-                        </div><!--/.fluid-container-->
+        echo '<div class="btn-group">';
+        if (!$isEditing)
+            $this->renderPageButton('edit', 'icon-edit');
+        $this->renderPageButton('history', 'icon-time');
+        $this->renderPageButton('delete', 'icon-trash');
+        $this->renderPageButton('move', 'icon-move');
+        $this->renderPageButton('protect', 'icon-lock');
+        $this->renderPageButton('watch', 'icon-eye-open');
+        $this->renderPageButton('unwatch', 'icon-eye-close');
+        $this->renderPageButton('talk', 'icon-comment');
+        echo '</div>';
 
-                        <div id="footer" class="container-fluid">
-                        <?php
-                        $this->includePage('Imperial:Footer');
-               ?>
-                  </div>
-                  <?php $this->html( 'dataAfterContent' ); ?>
-                  <?php $this->printTrail(); ?>
-                  </body>
-                  </html>
-                  <?php
-   }
+        return true;
 
-   function getPageRawText($title) {
-      $pageTitle = Title::newFromText($title);
-      $page = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $pageTitle );
-      if(!$pageTitle->exists()) {
-         return 'Create the page [['.$title.']]';
-      } else {
-         // $page = $this->getSkin()->getWikiPage();
-         $revision = $page->getRevisionRecord();
-         $content = $revision->getContent( SlotRecord::MAIN, RevisionRecord::RAW );
-         return $content->getText();
-      }
-   }
+    }
 
-   function includePage($title) {
-      global $wgParser, $wgUser;
-      $pageTitle = Title::newFromText($title);
-      if(!$pageTitle->exists()) {
-         echo 'The page [[' . $title . ']] was not found.';
-      } else {
-         $page = WikiPage::factory( $pageTitle );
-         $revision = $page->getRevisionRecord();
-         $content = $revision->getContent( SlotRecord::MAIN, RevisionRecord::FOR_THIS_USER );;
+    public function getNavbarContent($isLoggedIn): string
+    {
+        $html = Html::openElement('div', ['class' => 'navbar navbar-fixed-top']);
+        $html .= Html::openElement('div', ['class' => 'navbar-inner']);
 
-         $wgParserOptions = new ParserOptions($wgUser);
-         $parserOutput = $wgParser->parse($content->getText(), $pageTitle, $wgParserOptions);
-         echo $parserOutput->getText();
-      }
-   }
+        $html .= Html::openElement('div', ['class' => 'container-fluid']);
 
-   function renderPageButton($key,$icon)
-   {
-      if (!array_key_exists($key,$this->data['content_actions']))
-         return;
-      $action=$this->data['content_actions'][$key];
-      echo '<a class="btn" href="'.htmlspecialchars($action['href']).'" title="'.htmlspecialchars($action['text']).'"><i class="'.$icon.'"></i></a>';
-   }
+        $html .= Html::rawElement('a', ['class' => 'btn btn-navbar', 'data-toggle' => 'collapse', 'data-target' => '.nav-collapse'],
+            Html::rawElement('i', ['class' => 'icon-search icon-white'])
+        );
 
-   function renderPageButtons($isEditing)
-   {
-      if ( count( $this->data['content_actions'])==0 )
-         return false;
+        $html .= Html::rawElement('a', ['class' => 'brand', 'href' => $this->data['nav_urls']['mainpage']['href']], 'Empire');
 
-      echo '<div class="btn-group">';
-      if (!$isEditing)
-         $this->renderPageButton('edit','icon-edit');
-      $this->renderPageButton('history','icon-time');
-      $this->renderPageButton('delete','icon-trash');
-      $this->renderPageButton('move','icon-move');
-      $this->renderPageButton('protect','icon-lock');
-      $this->renderPageButton('watch','icon-eye-open');
-      $this->renderPageButton('unwatch','icon-eye-close');
-      $this->renderPageButton('talk','icon-comment');
-      echo '</div>';
+        $html .= Html::openElement('div', ['class' => 'nav-collapse']);
+        $html .= Html::rawElement('form', ['class' => 'pull-right navbar-search', 'action' => $this->text('wgScript'), 'id' => 'searchform'],
+            $this->makeSearchInput(['id' => 'searchInput']),
+            Html::hidden('title', $this->get('searchtitle')) .
+            $this->makeSearchButton(
+                'fulltext',
+                ['id' => 'mw-searchButton', 'class' => 'searchButton mw-fallbackSearchButton']
+            ) .
+            $this->makeSearchButton(
+                'go',
+                ['id' => 'searchButton', 'class' => 'searchButton']
+            )
+        );
+        $html .= Html::rawElement('ul', ['class' => 'nav'], $this->parseMenu('Imperial:TitleBar'));
 
-      return true;
+        if ($isLoggedIn) {
+            $html .= $this->getUserDropdown();
+        }
 
-   }
+        $html .= Html::closeElement('div'); // nav-collapse
+        $html .= Html::closeElement('div'); // navbar-inner
+        $html .= Html::closeElement('div'); // container-fluid
+        $html .= Html::closeElement('div');
+        return $html;
+    }
 
-   function getCategories() {
-      $catlinks = $this->getCategoryLinks();
-      if( !empty( $catlinks ) )
-      {
-         return '<div id="pageCategories"><ul class="pager">'.$catlinks.'</ul></div>';
-      }
-   }
+    function getCategories()
+    {
+        $catlinks = $this->getCategoryLinks();
+        if (!empty($catlinks)) {
+            return '<div id="pageCategories"><ul class="pager">' . $catlinks . '</ul></div>';
+        }
+    }
 
-   function getCategoryLinks() {
-      global $wgOut;
+    function getCategoryLinks()
+    {
+        global $wgOut;
 
-      $out = $wgOut;
+        $out = $wgOut;
 
-      $allCats = $out->getCategoryLinks();
-      if ( count( $allCats ) == 0 ) {
-         return '';
-      }
+        $allCats = $out->getCategoryLinks();
+        if (count($allCats) == 0) {
+            return '';
+        }
 
-      $embed = "<li>";
-      $pop = "</li>";
+        $embed = "<li>";
+        $pop = "</li>";
 
-      $s = '';
-      // wfMsgExt( 'key', SOME_FORMAT, 'apple' );
-      // wfMessage( 'key', 'apple' )->SOME_FORMAT_FUNCTION();
-      // $colon = wfMsgExt( 'colon-separator', 'escapenoentities' );
-      $colon = wfMessage( 'colon-separator' )->escaped();
+        if (!empty($allCats['normal'])) {
+            return $embed . implode("{$pop}{$embed}", $allCats['normal']) . $pop;
+        }
 
-      if ( !empty( $allCats['normal'] ) ) {
-         $s.= $embed . implode( "{$pop}{$embed}" , $allCats['normal'] ) . $pop;
-      }
+        return '';
+    }
 
-      return $s;
-   }
+    public function getUserDropdown(): string
+    {
+        $listAttributes = $this->html('userlangattributes');
+        $listAttributes['class'] = 'nav pull-right';
+        $html = Html::openElement('ul', $listAttributes);
+        if (count($this->data['personal_urls']) > 0) {
+            $html .= Html::openElement('li', ['class' => 'dropdown']);
+            $html .= Html::rawElement('a', ['class' => 'dropdown-toggle', 'href' => '#', 'data-toggle' => 'dropdown'],
+                $this->getSkin()->getUser()->getName() .
+                Html::rawElement('b', ['class' => 'caret'])
+            );
+
+            $html .= Html::openElement('ul', ['class' => 'dropdown-menu']);
+            foreach ($this->data['personal_urls'] as $item) {
+                $html .= Html::openElement('li', $item['attributes'] ?? '');
+                $linkAttributes = ['href' => htmlspecialchars($item['href']), 'class', $item['class'] ?? ''];
+                $html .= Html::rawElement('a', $linkAttributes, htmlspecialchars($item['text']));
+                $html .= Html::closeElement('li');
+            }
+
+            $html .= Html::closeElement('ul');
+            $html .= Html::closeElement('li');
+        }
+        $html .= Html::closeElement('ul');
+        return $html;
+    }
+    public function getBreadcrumbs(): string
+    {
+        $bc = $this->data['breadcrumbs'];
+        $bc = str_replace('<a', '<li><a', $bc);
+        $bc = str_replace('/a> &gt;', '/a><span class="divider">/</span></li>', $bc);
+        $bc = str_replace('<strong', '<li><strong', $bc);
+        $bc = preg_replace('/\/strong\>(.*)$/', '/strong></li>', $bc);
+        return $bc;
+    }
 }
 
