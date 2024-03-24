@@ -1,0 +1,34 @@
+{
+  "name": "ImperialWizardExtension",
+  "version": "2.0.0",
+  "author": [
+    "Ian Thomas <ian@wildwinter.net>",
+    "Clive Evans <cliveevans@ntlworld.com"
+  ],
+  "description": "Adds a load of Imperial-specific (and Bootstrap) features to MediaWiki. Completely rewritten from Aaron Parecki\\'s original.",
+  "license-name": "CC BY-SA 4.0",
+  "type": "parserhook",
+  "requires": {
+    "MediaWiki": ">= 1.39.0"
+  },
+  "AutoloadNamespaces": {
+    "MediaWiki\\Extension\\ImperialWizardExtension\\": "includes/"
+  },
+  "Hooks": {
+    "ParserFirstCallInit": "ParserFunctionsHookHandler",
+    "GetDoubleUnderscoreIDs": "MediaWiki\\Extension\\ImperialWizardExtension\\ImperialExtension::onGetDoubleUnderscoreIDs",
+    "SkinEditSectionLinks": "MediaWiki\\Extension\\ImperialWizardExtension\\ImperialExtension::onSkinEditSectionLinks",
+    "HtmlPageLinkRendererEnd": "MediaWiki\\Extension\\ImperialWizardExtension\\ImperialExtension::renderInternalLink",
+    "LinkerMakeExternalLink": "MediaWiki\\Extension\\ImperialWizardExtension\\ImperialExtension::renderExternalLink",
+    "ParserAfterParse": "MediaWiki\\Extension\\ImperialWizardExtension\\ImperialExtension::onParserAfterParse"
+  },
+  "HookHandlers": {
+    "ParserFunctionsHookHandler": {
+      "class": "MediaWiki\\Extension\\ImperialWizardExtension\\Hooks"
+    }
+  },
+  "ExtensionMessagesFiles": {
+    "ImperialWizardExtensionMagic": "ImperialWizard.i18n.magic.php"
+  },
+  "manifest_version": 2
+}

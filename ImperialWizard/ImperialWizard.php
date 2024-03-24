@@ -18,21 +18,11 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Logger\LoggerFactory;
 
-/**
- * Inherit main code from SkinTemplate, set the CSS and template filter.
- * @todo document
- * @package MediaWiki
- * @subpackage Skins
- */
+
 class SkinImperialWizard extends SkinTemplate
 {
 }
 
-/**
- * @todo document
- * @package MediaWiki
- * @subpackage Skins
- */
 class ImperialWizardTemplate extends BaseTemplate
 {
     /**
@@ -133,9 +123,8 @@ class ImperialWizardTemplate extends BaseTemplate
 
         $isEditing = (strcmp($requestedAction, 'edit') == 0);
 
-        $this->skin = $this->data['skin'];
-
         $title = $this->getSkin()->getTitle();
+
         if (strpos($title, '/') === false) {
             $this->data['ImpWiztitle'] = $title;
         } else {
@@ -198,7 +187,7 @@ class ImperialWizardTemplate extends BaseTemplate
         $html .= Html::closeElement('div'); // row-fluid outer
         $html .= Html::closeElement('div'); // container-fluid
 
-//        $html .= Html::rawElement('div', ['id' => 'footer', 'class' => 'container-fluid'], $this->includePage('Imperial:Footer'));
+        $html .= Html::rawElement('div', ['id' => 'footer', 'class' => 'container-fluid'], $this->includePage('Imperial:Footer'));
 
         $html .= $this->html('dataAfterContent');
         $html .= $this->getTrail();
