@@ -58,9 +58,8 @@
         "mobile"
       ],
       "scripts": [
-        "js/jquery-1.7.1.min.js",
-        "js/site.js",
-        "js/bootstrap.js"
+        "js/bootstrap.js",
+        "js/site.js"
       ]
     }
   },

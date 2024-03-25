@@ -2,8 +2,10 @@
 
 namespace MediaWiki\Extension\ImperialWizardExtension;
 
+use MediaWiki\Hook\ParserFirstCallInitHook;
+
 class Hooks implements
-    \MediaWiki\Hook\ParserFirstCallInitHook {
+    ParserFirstCallInitHook {
 
     public function onParserFirstCallInit($parser)
     {

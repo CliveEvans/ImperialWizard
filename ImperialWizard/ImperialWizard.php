@@ -232,29 +232,29 @@ class ImperialWizardTemplate extends BaseTemplate
     function renderPageButton($key, $icon)
     {
         if (!array_key_exists($key, $this->data['content_actions']))
-            return;
+            return '';
         $action = $this->data['content_actions'][$key];
-        echo '<a class="btn" href="' . htmlspecialchars($action['href']) . '" title="' . htmlspecialchars($action['text']) . '"><i class="' . $icon . '"></i></a>';
+        return '<a class="btn" href="' . htmlspecialchars($action['href']) . '" title="' . htmlspecialchars($action['text']) . '"><i class="' . $icon . '"></i></a>';
     }
 
     function renderPageButtons($isEditing)
     {
         if (count($this->data['content_actions']) == 0)
-            return false;
+            return '';
 
-        echo '<div class="btn-group">';
+        $out = '<div class="btn-group">';
         if (!$isEditing)
-            $this->renderPageButton('edit', 'icon-edit');
-        $this->renderPageButton('history', 'icon-time');
-        $this->renderPageButton('delete', 'icon-trash');
-        $this->renderPageButton('move', 'icon-move');
-        $this->renderPageButton('protect', 'icon-lock');
-        $this->renderPageButton('watch', 'icon-eye-open');
-        $this->renderPageButton('unwatch', 'icon-eye-close');
-        $this->renderPageButton('talk', 'icon-comment');
-        echo '</div>';
+            $out .= $this->renderPageButton('edit', 'icon-edit');
+        $out .= $this->renderPageButton('history', 'icon-time');
+        $out .= $this->renderPageButton('delete', 'icon-trash');
+        $out .= $this->renderPageButton('move', 'icon-move');
+        $out .= $this->renderPageButton('protect', 'icon-lock');
+        $out .= $this->renderPageButton('watch', 'icon-eye-open');
+        $out .= $this->renderPageButton('unwatch', 'icon-eye-close');
+        $out .= $this->renderPageButton('talk', 'icon-comment');
+        $out .= '</div>';
 
-        return true;
+        return $out;
 
     }
 
@@ -272,17 +272,9 @@ class ImperialWizardTemplate extends BaseTemplate
         $html .= Html::rawElement('a', ['class' => 'brand', 'href' => $this->data['nav_urls']['mainpage']['href']], 'Empire');
 
         $html .= Html::openElement('div', ['class' => 'nav-collapse']);
-        $html .= Html::rawElement('form', ['class' => 'pull-right navbar-search', 'action' => $this->text('wgScript'), 'id' => 'searchform'],
-            $this->makeSearchInput(['id' => 'searchInput']),
+        $html .= Html::rawElement('form', ['class' => 'pull-right navbar-search', 'action' => $this->get('wgScript'), 'id' => 'searchform'],
             Html::hidden('title', $this->get('searchtitle')) .
-            $this->makeSearchButton(
-                'fulltext',
-                ['id' => 'mw-searchButton', 'class' => 'searchButton mw-fallbackSearchButton']
-            ) .
-            $this->makeSearchButton(
-                'go',
-                ['id' => 'searchButton', 'class' => 'searchButton']
-            )
+            $this->makeSearchInput(['id' => 'searchInput'])
         );
         $html .= Html::rawElement('ul', ['class' => 'nav'], $this->parseMenu('Imperial:TitleBar'));
 

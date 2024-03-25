@@ -528,7 +528,6 @@ p {
     background-repeat: no-repeat;
 }
 
-/* Sadly, IE6 won't understand this */
 #preftoc li:first-child {
     margin-left: 1px;
 }
