@@ -15,7 +15,6 @@ class ImperialExtension
 
     public static function ic($input, array $args, Parser $parser, PPFrame $frame)
     {
-        echo "rendering an ic tag";
         $out = '<div class="ic"><div class="ic-inner">';
         $out .= $parser->recursiveTagParse($input);
         $out .= '</div></div>';
