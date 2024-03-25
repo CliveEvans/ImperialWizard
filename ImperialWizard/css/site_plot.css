@@ -395,7 +395,7 @@ div.ic {
 }
 
 div.ic-inner {
-    background-image: url('img/parch.png');
+    background-image: url('../img/parch.png');
     display: inline-block;
     text-align: left;
     border-radius: 10px;
