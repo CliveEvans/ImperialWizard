@@ -1,13 +1,4 @@
 <?php
-/**
- * A MediaWiki skin to use Twitter's Bootstrap.
- * Loosely based on the Bootstrap skin by Aaron Parecki <aaron@parecki.com>
- * but completely rewritten to support Bootstrap 2.0
- * and with a load of additional features.
- *
- * @Version 0.1.0
- * @Author Ian Thomas <ian@wildwinter.net>
- */
 
 if (!defined('MEDIAWIKI')) {
     die(-1);

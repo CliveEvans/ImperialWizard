@@ -5,7 +5,7 @@
     "Ian Thomas <ian@wildwinter.net>",
     "Clive Evans <cliveevans@ntlworld.com"
   ],
-  "description": "Adds a load of Imperial-specific (and Bootstrap) features to MediaWiki. Completely rewritten from Aaron Parecki\\'s original.",
+  "description": "Adds a load of Imperial-specific (and Bootstrap) features to MediaWiki. Completely rewritten from Aaron Parecki's original.",
   "license-name": "CC BY-SA 4.0",
   "type": "parserhook",
   "requires": {

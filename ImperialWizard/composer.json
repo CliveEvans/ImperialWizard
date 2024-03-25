@@ -1,7 +1,7 @@
 {
-  "name": "mediawiki/imperial-wizzrd-skin",
+  "name": "mediawiki/imperial-wizard-skin",
   "type": "mediawiki-skin",
-  "description": "Hacked together variant of bootstrap",
+  "description": "A MediaWiki skin to use Twitter's Bootstrap. Loosely based on the Bootstrap skin by Aaron Parecki <aaron@parecki.com> rewritten to support Bootstrap 2.0 and with a load of additional features.",
   "require": {
     "composer/installers": ">1.0.12"
   },

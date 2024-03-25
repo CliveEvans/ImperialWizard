@@ -5,8 +5,8 @@
     "Ian Thomas <ian@wildwinter.net>",
     "Clive Evans <cliveevans@ntlworld.com"
   ],
-  "descriptionmsg": "imperial wizard",
-  "namemsg": "imperial wizard",
+  "descriptionmsg": "A MediaWiki skin to use Twitter's Bootstrap. Loosely based on the Bootstrap skin by Aaron Parecki <aaron@parecki.com> rewritten to support Bootstrap 2.0 and with a load of additional features.",
+  "namemsg": "Imperial Wizard",
   "license-name": "CC BY-SA 4.0",
   "type": "skin",
   "requires": {
