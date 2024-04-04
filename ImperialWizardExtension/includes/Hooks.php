@@ -13,6 +13,8 @@ class Hooks implements
         for ($i = 1; $i <= 12; $i++)
             $parser->setHook('span' . $i, [ImperialExtension::class, 'span' . $i]);
 
+        $parser->setHook('fourpicture', array('ImperialExtension','fourpicture'));
+        $parser->setHook('picturecolumn', array('ImperialExtension','picturecolumn'));
         $parser->setHook('row', [ImperialExtension::class, 'row']);
         $parser->setHook('row-fluid', [ImperialExtension::class, 'row-fluid']);
         $parser->setHook('btn-group', [ImperialExtension::class, 'btn-group']);

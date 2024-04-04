@@ -13,6 +13,31 @@ use Sanitizer;
 class ImperialExtension
 {
 
+    public static function picturecolumn($input, array $args, Parser $parser, PPFrame $frame)
+    {
+        $out='<div class="picturecolumn" style="';
+        if (isset($args['float'])) {
+            $out.='float:'.$args['float'].'; ';
+        }
+        if (isset($args['width'])) {
+            $out.='width:'.$args['width'].'; ';
+        }
+        if (isset($args['maxwidth'])) {
+            $out.='maxwidth:'.$args['maxwidth'].'; ';
+        }
+        $out.='">';
+        $out.=$parser->recursiveTagParse($input);
+        $out.='</div></div>';
+        return $out;
+    }
+
+    public static function fourpicture($input, array $args, Parser $parser, PPFrame $frame)
+    {
+        $out='<div class="fourpicture">';
+        $out.=$parser->recursiveTagParse($input);
+        $out.='</div>';
+        return $out;
+    }
     public static function ic($input, array $args, Parser $parser, PPFrame $frame)
     {
         $out = '<div class="ic"><div class="ic-inner">';
