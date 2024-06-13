@@ -84,7 +84,7 @@ class ImperialExtension
     public static function label($input, array $args, Parser $parser, PPFrame $frame)
     {
         $out = '<span class="label';
-        if ($args['type']) {
+        if (isset($args['type'])) {
             $out .= ' label-' . $args['type'];
         }
         $out .= '">' . $parser->recursiveTagParse($input) . '</span>';
@@ -94,7 +94,7 @@ class ImperialExtension
     public static function herounit($input, array $args, Parser $parser, PPFrame $frame)
     {
         $out = '<div class="hero-unit"';
-        if ($args['image']) {
+        if (isset($args['image'])) {
             $img = wfFindFile(Title::makeTitle(NS_IMAGE, $args['image']));
             if ($img) {
                 $url = $img->getURL();
