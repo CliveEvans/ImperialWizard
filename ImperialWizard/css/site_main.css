@@ -908,11 +908,11 @@ div.slice-vertical {
     background-color: #f5f5f5;
 }
 
-/* Wiki pages still use Bootstrap 2 alert classes (alert-block, alert-message,
-   warning). Map them onto Bootstrap 5's alert-warning colour tokens. */
-.alert.alert-block,
-.alert.alert-message,
-.alert.warning {
+/* Bootstrap 2 made plain .alert (and combinations like alert-block /
+   alert-message / warning) default to yellow. In Bootstrap 5 bare .alert is
+   transparent — restore the legacy yellow unless an explicit BS5 variant
+   class is present. */
+.alert:not(.alert-primary):not(.alert-secondary):not(.alert-success):not(.alert-danger):not(.alert-warning):not(.alert-info):not(.alert-light):not(.alert-dark) {
     --bs-alert-color: #664d03;
     --bs-alert-bg: #fff3cd;
     --bs-alert-border-color: #ffecb5;
