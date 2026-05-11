@@ -16,11 +16,6 @@ class SkinImperialWizard extends SkinTemplate
 
 class ImperialWizardTemplate extends BaseTemplate
 {
-    /**
-     * @var Cached skin object
-     */
-    var $skin;
-
     function breakTitle(&$link, &$title)
     {
         if (preg_match('/(.+)\|(.+)/', $link, $match)) {
@@ -89,7 +84,8 @@ class ImperialWizardTemplate extends BaseTemplate
                 $out .= '</li>';
             } else {
                 if (is_object($pageTitle)) {
-                    $out .= '<li' . ($this->data['title'] == $link ? ' class="active"' : '') . '><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
+                    $isActive = $pageTitle->equals($this->getSkin()->getTitle());
+                    $out .= '<li' . ($isActive ? ' class="active"' : '') . '><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
                 }
             }
         }
@@ -106,11 +102,9 @@ class ImperialWizardTemplate extends BaseTemplate
      */
     public function execute()
     {
-        global $wgRequest;
-
         $isLoggedIn = $this->getSkin()->getUser()->isRegistered();
 
-        $requestedAction = $wgRequest->getVal('action', 'view');
+        $requestedAction = $this->getSkin()->getRequest()->getVal('action', 'view');
 
         $isEditing = (strcmp($requestedAction, 'edit') == 0);
 
@@ -131,7 +125,7 @@ class ImperialWizardTemplate extends BaseTemplate
 
         $logo = MediaWikiServices::getInstance()->getRepoGroup()->findFile(Title::makeTitle(NS_FILE, 'Logo.jpg'));
         if ($logo) {
-            $html .= Html::rawElement('div', ['id' => 'logo'], Html::rawElement('img', ['src' => $logo . getURL()]));
+            $html .= Html::rawElement('div', ['id' => 'logo'], Html::rawElement('img', ['src' => $logo->getUrl()]));
         }
 
         if ($isLoggedIn) {
@@ -209,7 +203,7 @@ class ImperialWizardTemplate extends BaseTemplate
         if (!$pageTitle->exists()) {
             return 'The page [[' . $title . ']] was not found.';
         } else {
-            $page = WikiPage::factory($pageTitle);
+            $page = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle($pageTitle);
             $revision = $page->getRevisionRecord();
             $user = $this->getSkin()->getUser();
             $content = $revision->getContent(SlotRecord::MAIN, RevisionRecord::FOR_THIS_USER, $this->getSkin()->getAuthority());
@@ -286,15 +280,12 @@ class ImperialWizardTemplate extends BaseTemplate
         if (!empty($catlinks)) {
             return '<div id="pageCategories"><ul class="pager">' . $catlinks . '</ul></div>';
         }
+        return '';
     }
 
     function getCategoryLinks()
     {
-        global $wgOut;
-
-        $out = $wgOut;
-
-        $allCats = $out->getCategoryLinks();
+        $allCats = $this->getSkin()->getOutput()->getCategoryLinks();
         if (count($allCats) == 0) {
             return '';
         }
@@ -324,7 +315,7 @@ class ImperialWizardTemplate extends BaseTemplate
             $html .= Html::openElement('ul', ['class' => 'dropdown-menu']);
             foreach ($this->data['personal_urls'] as $item) {
                 $html .= Html::openElement('li', $item['attributes'] ?? '');
-                $linkAttributes = ['href' => htmlspecialchars($item['href']), 'class', $item['class'] ?? ''];
+                $linkAttributes = ['href' => htmlspecialchars($item['href']), 'class' => $item['class'] ?? ''];
                 $html .= Html::rawElement('a', $linkAttributes, htmlspecialchars($item['text']));
                 $html .= Html::closeElement('li');
             }

@@ -6,9 +6,9 @@ use Html;
 use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
-use StripState;
-use Xml;
 use Sanitizer;
+use StripState;
+use Title;
 
 class ImperialExtension
 {
@@ -27,7 +27,7 @@ class ImperialExtension
         }
         $out.='">';
         $out.=$parser->recursiveTagParse($input);
-        $out.='</div></div>';
+        $out.='</div>';
         return $out;
     }
 
@@ -95,9 +95,9 @@ class ImperialExtension
     {
         $out = '<div class="hero-unit"';
         if (isset($args['image'])) {
-            $img = wfFindFile(Title::makeTitle(NS_IMAGE, $args['image']));
+            $img = MediaWikiServices::getInstance()->getRepoGroup()->findFile(Title::makeTitle(NS_FILE, $args['image']));
             if ($img) {
-                $url = $img->getURL();
+                $url = $img->getUrl();
                 $out .= " style=\"background-image:url('" . $url . "');\"";
             }
         }
@@ -230,7 +230,7 @@ class ImperialExtension
 
         self::ModifyLink($text, $mergedattribs, 1);
         if ($mergedattribs)
-            $attribsText = Xml::expandAttributes($mergedattribs);
+            $attribsText = Html::expandAttributes($mergedattribs);
 
         $link = sprintf('<a href="%s"%s>%s<i class="icon-share-alt"></i></a>', $url, $attribsText, $text);
 

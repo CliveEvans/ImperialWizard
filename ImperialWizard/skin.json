@@ -57,6 +57,9 @@
         "desktop",
         "mobile"
       ],
+      "dependencies": [
+        "jquery"
+      ],
       "scripts": [
         "js/bootstrap.js",
         "js/site.js"
