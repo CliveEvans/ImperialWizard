@@ -95,9 +95,9 @@ class ImperialExtension
     {
         $out = '<div class="hero-unit"';
         if (isset($args['image'])) {
-            $img = wfFindFile(Title::makeTitle(NS_IMAGE, $args['image']));
+            $img = MediaWikiServices::getInstance()->getRepoGroup()->findFile(Title::makeTitle(NS_FILE, $args['image']));
             if ($img) {
-                $url = $img->getURL();
+                $url = $img->getUrl();
                 $out .= " style=\"background-image:url('" . $url . "');\"";
             }
         }
