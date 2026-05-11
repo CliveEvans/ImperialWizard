@@ -170,7 +170,7 @@ class ImperialExtension
         $links['editicon'] = [
             'text' => '',
             'targetTitle' => $title,
-            'attribs' => ['class' => 'icon-edit', 'aria-hidden' => 'true'],
+            'attribs' => ['class' => 'bi bi-pencil', 'aria-hidden' => 'true'],
             'query' => ['action' => 'edit', 'section' => $section],
             'options' => ['noclasses', 'known']
         ];
@@ -178,7 +178,7 @@ class ImperialExtension
         $links['topicon'] = [
             'text' => '',
             'targetTitle' => $title,
-            'attribs' => ['class' => 'icon-arrow-up', 'aria-hidden' => 'true'],
+            'attribs' => ['class' => 'bi bi-arrow-up', 'aria-hidden' => 'true'],
             'query' => ['action' => 'view', 'section' => '0'],
             'options' => ['noclasses', 'known']
         ];
@@ -232,7 +232,7 @@ class ImperialExtension
         if ($mergedattribs)
             $attribsText = Html::expandAttributes($mergedattribs);
 
-        $link = sprintf('<a href="%s"%s>%s<i class="icon-share-alt"></i></a>', $url, $attribsText, $text);
+        $link = sprintf('<a href="%s"%s>%s<i class="bi bi-box-arrow-up-right"></i></a>', $url, $attribsText, $text);
 
         return false;
     }

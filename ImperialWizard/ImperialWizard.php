@@ -228,16 +228,16 @@ class ImperialWizardTemplate extends BaseTemplate
         if (count($this->data['content_actions']) == 0)
             return '';
 
-        $out = '<div class="btn-group">';
+        $out = '<div class="btn-group" role="group">';
         if (!$isEditing)
-            $out .= $this->renderPageButton('edit', 'icon-edit');
-        $out .= $this->renderPageButton('history', 'icon-time');
-        $out .= $this->renderPageButton('delete', 'icon-trash');
-        $out .= $this->renderPageButton('move', 'icon-move');
-        $out .= $this->renderPageButton('protect', 'icon-lock');
-        $out .= $this->renderPageButton('watch', 'icon-eye-open');
-        $out .= $this->renderPageButton('unwatch', 'icon-eye-close');
-        $out .= $this->renderPageButton('talk', 'icon-comment');
+            $out .= $this->renderPageButton('edit', 'bi bi-pencil');
+        $out .= $this->renderPageButton('history', 'bi bi-clock-history');
+        $out .= $this->renderPageButton('delete', 'bi bi-trash');
+        $out .= $this->renderPageButton('move', 'bi bi-arrows-move');
+        $out .= $this->renderPageButton('protect', 'bi bi-lock');
+        $out .= $this->renderPageButton('watch', 'bi bi-eye');
+        $out .= $this->renderPageButton('unwatch', 'bi bi-eye-slash');
+        $out .= $this->renderPageButton('talk', 'bi bi-chat');
         $out .= '</div>';
 
         return $out;
