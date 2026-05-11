@@ -27,7 +27,7 @@ class ImperialExtension
         }
         $out.='">';
         $out.=$parser->recursiveTagParse($input);
-        $out.='</div></div>';
+        $out.='</div>';
         return $out;
     }
 
