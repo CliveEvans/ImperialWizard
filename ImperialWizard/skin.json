@@ -47,8 +47,8 @@
         "mobile"
       ],
       "styles": [
-        "css/bootstrap.css",
-        "css/bootstrap-responsive.css",
+        "css/bootstrap.min.css",
+        "css/bootstrap-icons.min.css",
         "css/site.css"
       ]
     },
@@ -61,7 +61,7 @@
         "jquery"
       ],
       "scripts": [
-        "js/bootstrap.js",
+        "js/bootstrap.bundle.min.js",
         "js/site.js"
       ]
     }
