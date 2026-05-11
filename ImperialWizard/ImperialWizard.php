@@ -16,11 +16,6 @@ class SkinImperialWizard extends SkinTemplate
 
 class ImperialWizardTemplate extends BaseTemplate
 {
-    /**
-     * @var Cached skin object
-     */
-    var $skin;
-
     function breakTitle(&$link, &$title)
     {
         if (preg_match('/(.+)\|(.+)/', $link, $match)) {
