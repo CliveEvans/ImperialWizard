@@ -57,35 +57,36 @@ class ImperialWizardTemplate extends BaseTemplate
 
         foreach ($nav as $topItem) {
             if (array_key_exists('section', $topItem)) {
-                $out .= '<li class="nav-header">' . $topItem['section'] . '</li>';
+                $out .= '<li class="nav-item"><span class="navbar-text">' . $topItem['section'] . '</span></li>';
                 continue;
             }
             $link = $topItem['title'];
             $this->breakTitle($link, $title);
             $pageTitle = Title::newFromText($link);
             if (array_key_exists('sublinks', $topItem)) {
-                $out .= '<li class="dropdown">';
-                $out .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $title . '<b class="caret"></b></a>';
+                $out .= '<li class="nav-item dropdown">';
+                $out .= '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">' . $title . '</a>';
                 $out .= '<ul class="dropdown-menu">';
                 foreach ($topItem['sublinks'] as $subLink) {
                     if ($subLink == 'sep') {
-                        $out .= '<li class="divider"> </li>';
+                        $out .= '<li><hr class="dropdown-divider"></li>';
                         continue;
                     }
                     if ($subLink[0] == '=') {
-                        $out .= '<li class="nav-header">' . substr($subLink, 1) . '</li>';
+                        $out .= '<li><h6 class="dropdown-header">' . substr($subLink, 1) . '</h6></li>';
                         continue;
                     }
                     $this->breakTitle($subLink, $title);
                     $pageTitle = Title::newFromText($subLink);
-                    $out .= '<li><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a>';
+                    $out .= '<li><a class="dropdown-item" href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
                 }
                 $out .= '</ul>';
                 $out .= '</li>';
             } else {
                 if (is_object($pageTitle)) {
                     $isActive = $pageTitle->equals($this->getSkin()->getTitle());
-                    $out .= '<li' . ($isActive ? ' class="active"' : '') . '><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
+                    $activeClass = $isActive ? ' active' : '';
+                    $out .= '<li class="nav-item"><a class="nav-link' . $activeClass . '" href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
                 }
             }
         }
@@ -120,8 +121,8 @@ class ImperialWizardTemplate extends BaseTemplate
         $html = $this->getNavbarContent($isLoggedIn);
 
         $html .= Html::openElement('div', ['id' => 'article', 'class' => 'container-fluid']);
-        $html .= Html::openElement('div', ['class' => 'row-fluid']); // row-fluid outer
-        $html .= Html::openElement('div', ['id' => 'leftbar', 'class' => 'span2']);
+        $html .= Html::openElement('div', ['class' => 'row']); // outer row
+        $html .= Html::openElement('div', ['id' => 'leftbar', 'class' => 'col-md-2']);
 
         $logo = MediaWikiServices::getInstance()->getRepoGroup()->findFile(Title::makeTitle(NS_FILE, 'Logo.jpg'));
         if ($logo) {
@@ -134,15 +135,15 @@ class ImperialWizardTemplate extends BaseTemplate
 
         $html .= Html::rawElement('div', ['class' => 'well sidebar-nav'], $this->includePage('Imperial:LeftBar'));
 
-        $html .= Html::closeElement('div'); // span2
+        $html .= Html::closeElement('div'); // col-md-2
 
-        $html .= Html::openElement('div', ['class' => 'span10']);
+        $html .= Html::openElement('div', ['class' => 'col-md-10']);
 
         $html .= $this->getCategories();
 
-        $html .= Html::openElement('div', ['class' => 'row-fluid']);
+        $html .= Html::openElement('div', ['class' => 'row']);
 
-        $html .= $this->data['sitenotice'] ? Html::rawElement('div', ['class' => 'alert alert-block alert-message warning'], $this->data['sitenotice']) : '';
+        $html .= $this->data['sitenotice'] ? Html::rawElement('div', ['class' => 'alert alert-warning'], $this->data['sitenotice']) : '';
 
         $html .= Html::openElement('div', ['id' => 'page-title', 'class' => 'page-header']);
 
@@ -152,31 +153,29 @@ class ImperialWizardTemplate extends BaseTemplate
         );
 
         if (isset($this->data['breadcrumbs'])) {
-            $html .= Html::rawElement('ul', ['class' => 'breadcrumb'], $this->getBreadcrumbs());
+            $html .= Html::rawElement('ol', ['class' => 'breadcrumb'], $this->getBreadcrumbs());
         }
 
         $html .= Html::closeElement('div'); // page-header
         $html .= '<!-- end page-header -->';
-        $html .= Html::closeElement('div'); // row-fluid
+        $html .= Html::closeElement('div'); // row
 
         // the actual page content ...
 
-        $html .= Html::rawElement('div', ['class' => 'row-fluid'],
+        $html .= Html::rawElement('div', ['class' => 'row'],
             $this->get('bodytext') .
             Html::rawElement('hr') .
             Html::rawElement('small', [], $this->getCredits())
         );
 
-        $html .= Html::closeElement('div'); // span10
+        $html .= Html::closeElement('div'); // col-md-10
 
-        $html .= Html::closeElement('div'); // row-fluid outer
+        $html .= Html::closeElement('div'); // outer row
         $html .= Html::closeElement('div'); // container-fluid
 
         $html .= Html::rawElement('div', ['id' => 'footer', 'class' => 'container-fluid'], $this->includePage('Imperial:Footer'));
 
         $html .= $this->html('dataAfterContent');
-        $html .= $this->getTrail();
-
 
         // srsly people? This is how we do this?
         echo $html;
@@ -227,16 +226,16 @@ class ImperialWizardTemplate extends BaseTemplate
         if (count($this->data['content_actions']) == 0)
             return '';
 
-        $out = '<div class="btn-group">';
+        $out = '<div class="btn-group" role="group">';
         if (!$isEditing)
-            $out .= $this->renderPageButton('edit', 'icon-edit');
-        $out .= $this->renderPageButton('history', 'icon-time');
-        $out .= $this->renderPageButton('delete', 'icon-trash');
-        $out .= $this->renderPageButton('move', 'icon-move');
-        $out .= $this->renderPageButton('protect', 'icon-lock');
-        $out .= $this->renderPageButton('watch', 'icon-eye-open');
-        $out .= $this->renderPageButton('unwatch', 'icon-eye-close');
-        $out .= $this->renderPageButton('talk', 'icon-comment');
+            $out .= $this->renderPageButton('edit', 'bi bi-pencil');
+        $out .= $this->renderPageButton('history', 'bi bi-clock-history');
+        $out .= $this->renderPageButton('delete', 'bi bi-trash');
+        $out .= $this->renderPageButton('move', 'bi bi-arrows-move');
+        $out .= $this->renderPageButton('protect', 'bi bi-lock');
+        $out .= $this->renderPageButton('watch', 'bi bi-eye');
+        $out .= $this->renderPageButton('unwatch', 'bi bi-eye-slash');
+        $out .= $this->renderPageButton('talk', 'bi bi-chat');
         $out .= '</div>';
 
         return $out;
@@ -245,32 +244,37 @@ class ImperialWizardTemplate extends BaseTemplate
 
     public function getNavbarContent($isLoggedIn): string
     {
-        $html = Html::openElement('div', ['class' => 'navbar navbar-fixed-top']);
-        $html .= Html::openElement('div', ['class' => 'navbar-inner']);
-
+        $html = Html::openElement('nav', ['class' => 'navbar navbar-expand-lg fixed-top']);
         $html .= Html::openElement('div', ['class' => 'container-fluid']);
 
-        $html .= Html::rawElement('a', ['class' => 'btn btn-navbar', 'data-toggle' => 'collapse', 'data-target' => '.nav-collapse'],
-            Html::rawElement('i', ['class' => 'icon-search icon-white'])
-        );
+        $html .= Html::rawElement('a', ['class' => 'navbar-brand', 'href' => $this->data['nav_urls']['mainpage']['href']], 'Empire');
 
-        $html .= Html::rawElement('a', ['class' => 'brand', 'href' => $this->data['nav_urls']['mainpage']['href']], 'Empire');
+        $html .= Html::rawElement('button', [
+            'class' => 'navbar-toggler',
+            'type' => 'button',
+            'data-bs-toggle' => 'collapse',
+            'data-bs-target' => '#navbar-collapse',
+            'aria-controls' => 'navbar-collapse',
+            'aria-expanded' => 'false',
+            'aria-label' => 'Toggle navigation',
+        ], Html::rawElement('span', ['class' => 'navbar-toggler-icon']));
 
-        $html .= Html::openElement('div', ['class' => 'nav-collapse']);
-        $html .= Html::rawElement('form', ['class' => 'pull-right navbar-search', 'action' => $this->get('wgScript'), 'id' => 'searchform'],
+        $html .= Html::openElement('div', ['class' => 'collapse navbar-collapse', 'id' => 'navbar-collapse']);
+
+        $html .= Html::rawElement('ul', ['class' => 'navbar-nav me-auto'], $this->parseMenu('Imperial:TitleBar'));
+
+        $html .= Html::rawElement('form', ['class' => 'd-flex navbar-search', 'action' => $this->get('wgScript'), 'id' => 'searchform', 'role' => 'search'],
             Html::hidden('title', $this->get('searchtitle')) .
-            $this->makeSearchInput(['id' => 'searchInput'])
+            $this->makeSearchInput(['id' => 'searchInput', 'class' => 'form-control'])
         );
-        $html .= Html::rawElement('ul', ['class' => 'nav'], $this->parseMenu('Imperial:TitleBar'));
 
         if ($isLoggedIn) {
             $html .= $this->getUserDropdown();
         }
 
-        $html .= Html::closeElement('div'); // nav-collapse
-        $html .= Html::closeElement('div'); // navbar-inner
+        $html .= Html::closeElement('div'); // navbar-collapse
         $html .= Html::closeElement('div'); // container-fluid
-        $html .= Html::closeElement('div');
+        $html .= Html::closeElement('nav');
         return $html;
     }
 
@@ -302,29 +306,30 @@ class ImperialWizardTemplate extends BaseTemplate
 
     public function getUserDropdown(): string
     {
-        $listAttributes = $this->html('userlangattributes');
-        $listAttributes['class'] = 'nav pull-right';
-        $html = Html::openElement('ul', $listAttributes);
-        if (count($this->data['personal_urls']) > 0) {
-            $html .= Html::openElement('li', ['class' => 'dropdown']);
-            $html .= Html::rawElement('a', ['class' => 'dropdown-toggle', 'href' => '#', 'data-toggle' => 'dropdown'],
-                $this->getSkin()->getUser()->getName() .
-                Html::rawElement('b', ['class' => 'caret'])
-            );
-
-            $html .= Html::openElement('ul', ['class' => 'dropdown-menu']);
-            foreach ($this->data['personal_urls'] as $item) {
-                $html .= Html::openElement('li', $item['attributes'] ?? '');
-                $linkAttributes = ['href' => htmlspecialchars($item['href']), 'class' => $item['class'] ?? ''];
-                $html .= Html::rawElement('a', $linkAttributes, htmlspecialchars($item['text']));
-                $html .= Html::closeElement('li');
-            }
-
-            $html .= Html::closeElement('ul');
-            $html .= Html::closeElement('li');
+        if (count($this->data['personal_urls']) === 0) {
+            return '';
         }
-        $html .= Html::closeElement('ul');
-        return $html;
+
+        $items = '';
+        foreach ($this->data['personal_urls'] as $item) {
+            $linkClass = 'dropdown-item' . (isset($item['class']) ? ' ' . $item['class'] : '');
+            $items .= Html::rawElement('li', [],
+                Html::element('a', ['href' => $item['href'], 'class' => $linkClass], $item['text'])
+            );
+        }
+
+        return Html::rawElement('ul', ['class' => 'navbar-nav ms-auto'],
+            Html::rawElement('li', ['class' => 'nav-item dropdown'],
+                Html::rawElement('a', [
+                    'class' => 'nav-link dropdown-toggle',
+                    'href' => '#',
+                    'role' => 'button',
+                    'data-bs-toggle' => 'dropdown',
+                    'aria-expanded' => 'false',
+                ], $this->getSkin()->getUser()->getName())
+                . Html::rawElement('ul', ['class' => 'dropdown-menu dropdown-menu-end'], $items)
+            )
+        );
     }
     public function getBreadcrumbs(): string
     {
