@@ -286,6 +286,7 @@ class ImperialWizardTemplate extends BaseTemplate
         if (!empty($catlinks)) {
             return '<div id="pageCategories"><ul class="pager">' . $catlinks . '</ul></div>';
         }
+        return '';
     }
 
     function getCategoryLinks()
