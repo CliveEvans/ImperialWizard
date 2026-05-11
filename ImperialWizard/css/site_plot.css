@@ -60,7 +60,6 @@ b {
 
 .navbar {
     font-size: 13px;
-    display: contents;
 }
 
 .home h2 {
@@ -196,41 +195,38 @@ footer p {
   Custom top bar color
 **/
 
-.navbar div > ul .menu-dropdown, .nav .menu-dropdown, .navbar div > ul .dropdown-menu, .nav .dropdown-menu {
+.navbar .dropdown-menu {
     background-color: #540772;
 }
 
-.navbar div > ul .menu-dropdown li a, .nav .menu-dropdown li a, .navbar div > ul .dropdown-menu li a, .nav .dropdown-menu li a {
+.navbar .dropdown-menu .dropdown-item {
     color: #feeded;
 }
 
-.navbar div > ul .menu-dropdown li a:hover, .nav .menu-dropdown li a:hover, .navbar div > ul .dropdown-menu li a:hover, .nav .dropdown-menu li a:hover {
+.navbar .dropdown-menu .dropdown-item:hover,
+.navbar .dropdown-menu .dropdown-item:focus {
     background-color: #340752;
-}
-
-.navbar a, .navbar input:-moz-placeholder {
     color: #feeded;
 }
 
-.navbar .nav-header {
-    color: #888888;
+.navbar a, .navbar input::placeholder {
+    color: #feeded;
+}
+
+.navbar .navbar-text,
+.navbar .dropdown-menu .dropdown-header {
+    color: #cccccc;
     padding-left: 10px;
     font-size: 10px;
     line-height: 18px;
     text-transform: uppercase;
 }
 
-.navbar-inner, .navbar .fill {
-
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */
-    background: rgb(169, 3, 41); /* Old browsers */
-    background: -moz-linear-gradient(top, rgba(169, 3, 41, 1) 0%, rgba(143, 2, 34, 1) 44%, rgba(109, 0, 25, 1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, rgba(169, 3, 41, 1) 0%, rgba(143, 2, 34, 1) 44%, rgba(109, 0, 25, 1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, rgba(169, 3, 41, 1) 0%, rgba(143, 2, 34, 1) 44%, rgba(109, 0, 25, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a90329', endColorstr='#6d0019', GradientType=0); /* IE6-9 */
+.navbar {
+    background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%);
 }
 
-.navbar .nav > li > a {
+.navbar-nav .nav-link {
     color: #eee;
 }
 
@@ -611,7 +607,7 @@ div.wikiEditor-ui-toolbar .group .label {
     background-color: rgb(224, 238, 247);
 }
 
-.navbar .nav > li > a, .navbar .brand {
+.navbar-nav .nav-link, .navbar .navbar-brand {
     text-shadow: none;
     color: #FFF;
 }
