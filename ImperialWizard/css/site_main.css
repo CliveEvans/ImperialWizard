@@ -219,8 +219,13 @@ Custom top bar color
     color: #feeded;
 }
 
-.navbar a, .navbar input::placeholder {
+.navbar a {
     color: #feeded;
+}
+
+.navbar input::placeholder {
+    color: rgba(0, 0, 0, 0.55);
+    opacity: 1;
 }
 
 .navbar .navbar-text {
