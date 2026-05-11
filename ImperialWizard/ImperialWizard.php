@@ -324,7 +324,7 @@ class ImperialWizardTemplate extends BaseTemplate
             $html .= Html::openElement('ul', ['class' => 'dropdown-menu']);
             foreach ($this->data['personal_urls'] as $item) {
                 $html .= Html::openElement('li', $item['attributes'] ?? '');
-                $linkAttributes = ['href' => htmlspecialchars($item['href']), 'class', $item['class'] ?? ''];
+                $linkAttributes = ['href' => htmlspecialchars($item['href']), 'class' => $item['class'] ?? ''];
                 $html .= Html::rawElement('a', $linkAttributes, htmlspecialchars($item['text']));
                 $html .= Html::closeElement('li');
             }
