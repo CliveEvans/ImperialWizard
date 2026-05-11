@@ -176,8 +176,6 @@ class ImperialWizardTemplate extends BaseTemplate
         $html .= Html::rawElement('div', ['id' => 'footer', 'class' => 'container-fluid'], $this->includePage('Imperial:Footer'));
 
         $html .= $this->html('dataAfterContent');
-        $html .= $this->getTrail();
-
 
         // srsly people? This is how we do this?
         echo $html;
