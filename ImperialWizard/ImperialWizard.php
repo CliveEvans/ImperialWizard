@@ -106,11 +106,9 @@ class ImperialWizardTemplate extends BaseTemplate
      */
     public function execute()
     {
-        global $wgRequest;
-
         $isLoggedIn = $this->getSkin()->getUser()->isRegistered();
 
-        $requestedAction = $wgRequest->getVal('action', 'view');
+        $requestedAction = $this->getSkin()->getRequest()->getVal('action', 'view');
 
         $isEditing = (strcmp($requestedAction, 'edit') == 0);
 
@@ -291,11 +289,7 @@ class ImperialWizardTemplate extends BaseTemplate
 
     function getCategoryLinks()
     {
-        global $wgOut;
-
-        $out = $wgOut;
-
-        $allCats = $out->getCategoryLinks();
+        $allCats = $this->getSkin()->getOutput()->getCategoryLinks();
         if (count($allCats) == 0) {
             return '';
         }
