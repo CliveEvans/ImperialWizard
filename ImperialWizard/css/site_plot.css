@@ -683,6 +683,7 @@ div.wikiEditor-ui-toolbar .group .label {
 }
 
 .nav-list {
+    display: block;
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
