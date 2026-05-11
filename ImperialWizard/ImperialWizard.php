@@ -245,32 +245,37 @@ class ImperialWizardTemplate extends BaseTemplate
 
     public function getNavbarContent($isLoggedIn): string
     {
-        $html = Html::openElement('div', ['class' => 'navbar navbar-fixed-top']);
-        $html .= Html::openElement('div', ['class' => 'navbar-inner']);
-
+        $html = Html::openElement('nav', ['class' => 'navbar navbar-expand-lg fixed-top']);
         $html .= Html::openElement('div', ['class' => 'container-fluid']);
 
-        $html .= Html::rawElement('a', ['class' => 'btn btn-navbar', 'data-toggle' => 'collapse', 'data-target' => '.nav-collapse'],
-            Html::rawElement('i', ['class' => 'icon-search icon-white'])
-        );
+        $html .= Html::rawElement('a', ['class' => 'navbar-brand', 'href' => $this->data['nav_urls']['mainpage']['href']], 'Empire');
 
-        $html .= Html::rawElement('a', ['class' => 'brand', 'href' => $this->data['nav_urls']['mainpage']['href']], 'Empire');
+        $html .= Html::rawElement('button', [
+            'class' => 'navbar-toggler',
+            'type' => 'button',
+            'data-bs-toggle' => 'collapse',
+            'data-bs-target' => '#navbar-collapse',
+            'aria-controls' => 'navbar-collapse',
+            'aria-expanded' => 'false',
+            'aria-label' => 'Toggle navigation',
+        ], Html::rawElement('span', ['class' => 'navbar-toggler-icon']));
 
-        $html .= Html::openElement('div', ['class' => 'nav-collapse']);
-        $html .= Html::rawElement('form', ['class' => 'pull-right navbar-search', 'action' => $this->get('wgScript'), 'id' => 'searchform'],
+        $html .= Html::openElement('div', ['class' => 'collapse navbar-collapse', 'id' => 'navbar-collapse']);
+
+        $html .= Html::rawElement('ul', ['class' => 'navbar-nav me-auto'], $this->parseMenu('Imperial:TitleBar'));
+
+        $html .= Html::rawElement('form', ['class' => 'd-flex navbar-search', 'action' => $this->get('wgScript'), 'id' => 'searchform', 'role' => 'search'],
             Html::hidden('title', $this->get('searchtitle')) .
-            $this->makeSearchInput(['id' => 'searchInput'])
+            $this->makeSearchInput(['id' => 'searchInput', 'class' => 'form-control'])
         );
-        $html .= Html::rawElement('ul', ['class' => 'nav'], $this->parseMenu('Imperial:TitleBar'));
 
         if ($isLoggedIn) {
             $html .= $this->getUserDropdown();
         }
 
-        $html .= Html::closeElement('div'); // nav-collapse
-        $html .= Html::closeElement('div'); // navbar-inner
+        $html .= Html::closeElement('div'); // navbar-collapse
         $html .= Html::closeElement('div'); // container-fluid
-        $html .= Html::closeElement('div');
+        $html .= Html::closeElement('nav');
         return $html;
     }
 
@@ -302,29 +307,30 @@ class ImperialWizardTemplate extends BaseTemplate
 
     public function getUserDropdown(): string
     {
-        $listAttributes = $this->html('userlangattributes');
-        $listAttributes['class'] = 'nav pull-right';
-        $html = Html::openElement('ul', $listAttributes);
-        if (count($this->data['personal_urls']) > 0) {
-            $html .= Html::openElement('li', ['class' => 'dropdown']);
-            $html .= Html::rawElement('a', ['class' => 'dropdown-toggle', 'href' => '#', 'data-toggle' => 'dropdown'],
-                $this->getSkin()->getUser()->getName() .
-                Html::rawElement('b', ['class' => 'caret'])
-            );
-
-            $html .= Html::openElement('ul', ['class' => 'dropdown-menu']);
-            foreach ($this->data['personal_urls'] as $item) {
-                $html .= Html::openElement('li', $item['attributes'] ?? '');
-                $linkAttributes = ['href' => htmlspecialchars($item['href']), 'class' => $item['class'] ?? ''];
-                $html .= Html::rawElement('a', $linkAttributes, htmlspecialchars($item['text']));
-                $html .= Html::closeElement('li');
-            }
-
-            $html .= Html::closeElement('ul');
-            $html .= Html::closeElement('li');
+        if (count($this->data['personal_urls']) === 0) {
+            return '';
         }
-        $html .= Html::closeElement('ul');
-        return $html;
+
+        $items = '';
+        foreach ($this->data['personal_urls'] as $item) {
+            $linkClass = 'dropdown-item' . (isset($item['class']) ? ' ' . $item['class'] : '');
+            $items .= Html::rawElement('li', [],
+                Html::element('a', ['href' => $item['href'], 'class' => $linkClass], $item['text'])
+            );
+        }
+
+        return Html::rawElement('ul', ['class' => 'navbar-nav ms-auto'],
+            Html::rawElement('li', ['class' => 'nav-item dropdown'],
+                Html::rawElement('a', [
+                    'class' => 'nav-link dropdown-toggle',
+                    'href' => '#',
+                    'role' => 'button',
+                    'data-bs-toggle' => 'dropdown',
+                    'aria-expanded' => 'false',
+                ], $this->getSkin()->getUser()->getName())
+                . Html::rawElement('ul', ['class' => 'dropdown-menu dropdown-menu-end'], $items)
+            )
+        );
     }
     public function getBreadcrumbs(): string
     {
