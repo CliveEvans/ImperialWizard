@@ -131,7 +131,7 @@ class ImperialWizardTemplate extends BaseTemplate
 
         $logo = MediaWikiServices::getInstance()->getRepoGroup()->findFile(Title::makeTitle(NS_FILE, 'Logo.jpg'));
         if ($logo) {
-            $html .= Html::rawElement('div', ['id' => 'logo'], Html::rawElement('img', ['src' => $logo . getURL()]));
+            $html .= Html::rawElement('div', ['id' => 'logo'], Html::rawElement('img', ['src' => $logo->getUrl()]));
         }
 
         if ($isLoggedIn) {
