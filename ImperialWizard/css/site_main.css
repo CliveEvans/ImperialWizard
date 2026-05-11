@@ -287,6 +287,15 @@ Custom top bar color
     max-width: 100%;
 }
 
+/* Wikitext authors sometimes wrap content in `<div style="display:grid; ...">`.
+   By default grid items have `min-width: auto`, which uses each item's
+   min-content (the intrinsic image width). That forces the columns wider
+   than the viewport and causes horizontal scroll. Allow them to shrink. */
+.mw-parser-output [style*="display:grid"] > *,
+.mw-parser-output [style*="display: grid"] > * {
+    min-width: 0;
+}
+
 div.infobox {
     width: 250px;
     float: right;
