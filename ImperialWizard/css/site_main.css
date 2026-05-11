@@ -304,6 +304,16 @@ Custom top bar color
     min-width: 0;
 }
 
+/* With columns free to shrink, long unbreakable strings (e.g. URLs) and code
+   blocks become the next things that can push past the column edge. */
+.mw-parser-output {
+    overflow-wrap: break-word;
+}
+
+.mw-parser-output pre {
+    overflow-x: auto;
+}
+
 div.infobox {
     width: 250px;
     float: right;
