@@ -702,3 +702,13 @@ div.wikiEditor-ui-toolbar .group .label {
     text-decoration: none;
     background-color: #f5f5f5;
 }
+
+/* Wiki pages still use Bootstrap 2 alert classes (alert-block, alert-message,
+   warning). Map them onto Bootstrap 5's alert-warning colour tokens. */
+.alert.alert-block,
+.alert.alert-message,
+.alert.warning {
+    --bs-alert-color: #664d03;
+    --bs-alert-bg: #fff3cd;
+    --bs-alert-border-color: #ffecb5;
+}
