@@ -1,6 +1,6 @@
 {
   "name": "mediawiki/imperial-wizard-extension",
-  "type": "mediawiki-skin",
+  "type": "mediawiki-extension",
   "description": "Extension hacked together to allow the ImperialWizard skin to work",
   "require": {
     "composer/installers": ">1.0.12"
