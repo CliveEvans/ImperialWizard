@@ -263,14 +263,14 @@ class ImperialWizardTemplate extends BaseTemplate
 
         $html .= Html::rawElement('ul', ['class' => 'navbar-nav me-auto'], $this->parseMenu('Imperial:TitleBar'));
 
+        if ($isLoggedIn) {
+            $html .= $this->getUserDropdown();
+        }
+
         $html .= Html::rawElement('form', ['class' => 'd-flex navbar-search', 'action' => $this->get('wgScript'), 'id' => 'searchform', 'role' => 'search'],
             Html::hidden('title', $this->get('searchtitle')) .
             $this->makeSearchInput(['id' => 'searchInput', 'class' => 'form-control'])
         );
-
-        if ($isLoggedIn) {
-            $html .= $this->getUserDropdown();
-        }
 
         $html .= Html::closeElement('div'); // navbar-collapse
         $html .= Html::closeElement('div'); // container-fluid
@@ -318,7 +318,7 @@ class ImperialWizardTemplate extends BaseTemplate
             );
         }
 
-        return Html::rawElement('ul', ['class' => 'navbar-nav ms-auto'],
+        return Html::rawElement('ul', ['class' => 'navbar-nav'],
             Html::rawElement('li', ['class' => 'nav-item dropdown'],
                 Html::rawElement('a', [
                     'class' => 'nav-link dropdown-toggle',
