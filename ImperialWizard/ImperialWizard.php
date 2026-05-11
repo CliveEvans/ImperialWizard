@@ -121,8 +121,8 @@ class ImperialWizardTemplate extends BaseTemplate
         $html = $this->getNavbarContent($isLoggedIn);
 
         $html .= Html::openElement('div', ['id' => 'article', 'class' => 'container-fluid']);
-        $html .= Html::openElement('div', ['class' => 'row-fluid']); // row-fluid outer
-        $html .= Html::openElement('div', ['id' => 'leftbar', 'class' => 'span2']);
+        $html .= Html::openElement('div', ['class' => 'row']); // outer row
+        $html .= Html::openElement('div', ['id' => 'leftbar', 'class' => 'col-md-2']);
 
         $logo = MediaWikiServices::getInstance()->getRepoGroup()->findFile(Title::makeTitle(NS_FILE, 'Logo.jpg'));
         if ($logo) {
@@ -135,15 +135,15 @@ class ImperialWizardTemplate extends BaseTemplate
 
         $html .= Html::rawElement('div', ['class' => 'well sidebar-nav'], $this->includePage('Imperial:LeftBar'));
 
-        $html .= Html::closeElement('div'); // span2
+        $html .= Html::closeElement('div'); // col-md-2
 
-        $html .= Html::openElement('div', ['class' => 'span10']);
+        $html .= Html::openElement('div', ['class' => 'col-md-10']);
 
         $html .= $this->getCategories();
 
-        $html .= Html::openElement('div', ['class' => 'row-fluid']);
+        $html .= Html::openElement('div', ['class' => 'row']);
 
-        $html .= $this->data['sitenotice'] ? Html::rawElement('div', ['class' => 'alert alert-block alert-message warning'], $this->data['sitenotice']) : '';
+        $html .= $this->data['sitenotice'] ? Html::rawElement('div', ['class' => 'alert alert-warning'], $this->data['sitenotice']) : '';
 
         $html .= Html::openElement('div', ['id' => 'page-title', 'class' => 'page-header']);
 
@@ -153,24 +153,24 @@ class ImperialWizardTemplate extends BaseTemplate
         );
 
         if (isset($this->data['breadcrumbs'])) {
-            $html .= Html::rawElement('ul', ['class' => 'breadcrumb'], $this->getBreadcrumbs());
+            $html .= Html::rawElement('ol', ['class' => 'breadcrumb'], $this->getBreadcrumbs());
         }
 
         $html .= Html::closeElement('div'); // page-header
         $html .= '<!-- end page-header -->';
-        $html .= Html::closeElement('div'); // row-fluid
+        $html .= Html::closeElement('div'); // row
 
         // the actual page content ...
 
-        $html .= Html::rawElement('div', ['class' => 'row-fluid'],
+        $html .= Html::rawElement('div', ['class' => 'row'],
             $this->get('bodytext') .
             Html::rawElement('hr') .
             Html::rawElement('small', [], $this->getCredits())
         );
 
-        $html .= Html::closeElement('div'); // span10
+        $html .= Html::closeElement('div'); // col-md-10
 
-        $html .= Html::closeElement('div'); // row-fluid outer
+        $html .= Html::closeElement('div'); // outer row
         $html .= Html::closeElement('div'); // container-fluid
 
         $html .= Html::rawElement('div', ['id' => 'footer', 'class' => 'container-fluid'], $this->includePage('Imperial:Footer'));
