@@ -209,7 +209,7 @@ class ImperialWizardTemplate extends BaseTemplate
         if (!$pageTitle->exists()) {
             return 'The page [[' . $title . ']] was not found.';
         } else {
-            $page = WikiPage::factory($pageTitle);
+            $page = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle($pageTitle);
             $revision = $page->getRevisionRecord();
             $user = $this->getSkin()->getUser();
             $content = $revision->getContent(SlotRecord::MAIN, RevisionRecord::FOR_THIS_USER, $this->getSkin()->getAuthority());
