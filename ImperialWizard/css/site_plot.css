@@ -266,6 +266,17 @@ footer p {
     }
 }
 
+/* Stop oversized uploads (and the captioned-image wrapper) overflowing the
+   content column on narrow viewports. */
+.mw-parser-output img {
+    max-width: 100%;
+    height: auto;
+}
+
+.captioned-image {
+    max-width: 100%;
+}
+
 div.infobox {
     width: 250px;
     float: right;
