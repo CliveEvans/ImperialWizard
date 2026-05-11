@@ -14,13 +14,8 @@ html {
 
 body {
     background-color: #ffffff;
+    padding-top: 56px;
     padding-bottom: 0px;
-}
-
-@media (max-width: 980px) {
-    body {
-        padding-top: 0px;
-    }
 }
 
 .toclimit-2 .toclevel-1 ul,
