@@ -6,8 +6,9 @@ use Html;
 use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
-use StripState;
 use Sanitizer;
+use StripState;
+use Title;
 
 class ImperialExtension
 {
