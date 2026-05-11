@@ -11,5 +11,9 @@ $(document).ready(function() {
     $(this).addClass("table table-striped table-bordered table-condensed");
   });
 
+  $(".mw-parser-output table").each(function(){
+    $(this).wrap('<div class="table-responsive"></div>');
+  });
+
   $(".span4 .sectionLinks").hide();
 });
