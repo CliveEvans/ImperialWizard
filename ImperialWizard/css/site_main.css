@@ -816,3 +816,89 @@ div.slice-vertical {
     background: white;
     padding: 2px;
 }
+
+/* Compatibility styles for classes removed in Bootstrap 5. The skin and
+   extension still emit these class names; the rules below approximate the
+   Bootstrap 2 look. */
+
+.well {
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    padding: 19px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.hero-unit {
+    padding: 60px;
+    margin-bottom: 30px;
+    background-color: #eee;
+    border-radius: 6px;
+    font-size: 18px;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-unit h1 {
+    font-size: 60px;
+    line-height: 1;
+    color: inherit;
+    letter-spacing: -1px;
+}
+
+.nav-list {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-list li {
+    display: block;
+}
+
+.nav-list > li > a {
+    display: block;
+    padding: 3px 15px;
+}
+
+.nav-list > li > a:hover,
+.nav-list > li > a:focus {
+    text-decoration: none;
+    background-color: #eee;
+}
+
+.nav-list .nav-header {
+    display: block;
+    padding: 3px 15px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1.4;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.pager {
+    padding-left: 0;
+    margin: 20px 0;
+    list-style: none;
+    text-align: center;
+}
+
+.pager li {
+    display: inline;
+}
+
+.pager li > a {
+    display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+}
+
+.pager li > a:hover,
+.pager li > a:focus {
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
