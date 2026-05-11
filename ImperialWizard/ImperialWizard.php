@@ -84,7 +84,8 @@ class ImperialWizardTemplate extends BaseTemplate
                 $out .= '</li>';
             } else {
                 if (is_object($pageTitle)) {
-                    $out .= '<li' . ($this->data['title'] == $link ? ' class="active"' : '') . '><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
+                    $isActive = $pageTitle->equals($this->getSkin()->getTitle());
+                    $out .= '<li' . ($isActive ? ' class="active"' : '') . '><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
                 }
             }
         }
