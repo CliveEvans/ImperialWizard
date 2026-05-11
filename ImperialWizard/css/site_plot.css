@@ -20,7 +20,7 @@ body {
     padding-bottom: 0px;
 }
 
-.sidebar-nav {
+.well.sidebar-nav {
     padding: 9px 0;
 }
 
@@ -77,6 +77,10 @@ b {
 
 .bottom, .bottom h1, .bottom h2, .bottom h3, .bottom h4, .bottom h5, .bottom h6, .bottom a {
     color: #f6ebeb;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
 }
 
 h1 {
@@ -286,11 +290,13 @@ footer p {
     min-width: 0;
 }
 
-/* Same problem applies to Bootstrap 5's own .col-* classes inside a .row:
-   default min-width:auto means a column containing a native-resolution image
-   refuses to shrink, exceeds the row width, and flex-wraps onto a new line
-   (visually dropping the content column below the sidebar). */
-[class*="col-"] {
+/* Same problem applies to direct children of Bootstrap 5's .row (a flex
+   container): default min-width:auto means a child whose content includes a
+   native-resolution image refuses to shrink, the row overflows, and
+   flex-wrap drops the content column below the sidebar. Catch every flex
+   child of a row, not just .col-* — the skin wraps bodytext in a plain
+   #mw-content-text <div> that's also a flex item. */
+.row > * {
     min-width: 0;
 }
 
