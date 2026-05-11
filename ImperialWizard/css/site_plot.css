@@ -14,6 +14,13 @@ html {
     background-color: #111111;
 }
 
+/* Restore the Bootstrap 2 font stack. Bootstrap 5 defaults to system-ui,
+   which renders headings and body in the OS-native UI font (San Francisco
+   on macOS, Segoe UI on Windows) — a noticeable change from Helvetica. */
+:root {
+    --bs-body-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 body {
     background-color: #ffffff;
     padding-top: 56px;
