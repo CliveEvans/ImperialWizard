@@ -57,35 +57,36 @@ class ImperialWizardTemplate extends BaseTemplate
 
         foreach ($nav as $topItem) {
             if (array_key_exists('section', $topItem)) {
-                $out .= '<li class="nav-header">' . $topItem['section'] . '</li>';
+                $out .= '<li class="nav-item"><span class="navbar-text">' . $topItem['section'] . '</span></li>';
                 continue;
             }
             $link = $topItem['title'];
             $this->breakTitle($link, $title);
             $pageTitle = Title::newFromText($link);
             if (array_key_exists('sublinks', $topItem)) {
-                $out .= '<li class="dropdown">';
-                $out .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $title . '<b class="caret"></b></a>';
+                $out .= '<li class="nav-item dropdown">';
+                $out .= '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">' . $title . '</a>';
                 $out .= '<ul class="dropdown-menu">';
                 foreach ($topItem['sublinks'] as $subLink) {
                     if ($subLink == 'sep') {
-                        $out .= '<li class="divider"> </li>';
+                        $out .= '<li><hr class="dropdown-divider"></li>';
                         continue;
                     }
                     if ($subLink[0] == '=') {
-                        $out .= '<li class="nav-header">' . substr($subLink, 1) . '</li>';
+                        $out .= '<li><h6 class="dropdown-header">' . substr($subLink, 1) . '</h6></li>';
                         continue;
                     }
                     $this->breakTitle($subLink, $title);
                     $pageTitle = Title::newFromText($subLink);
-                    $out .= '<li><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a>';
+                    $out .= '<li><a class="dropdown-item" href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
                 }
                 $out .= '</ul>';
                 $out .= '</li>';
             } else {
                 if (is_object($pageTitle)) {
                     $isActive = $pageTitle->equals($this->getSkin()->getTitle());
-                    $out .= '<li' . ($isActive ? ' class="active"' : '') . '><a href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
+                    $activeClass = $isActive ? ' active' : '';
+                    $out .= '<li class="nav-item"><a class="nav-link' . $activeClass . '" href="' . $pageTitle->getLocalURL() . '">' . $title . '</a></li>';
                 }
             }
         }
