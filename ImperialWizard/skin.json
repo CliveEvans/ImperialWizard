@@ -25,7 +25,8 @@
           ],
           "name": "ImperialWizard",
           "template": "ImperialWizardTemplate",
-          "bodyOnly": true
+          "bodyOnly": true,
+          "responsive": true
         }
       ]
     }
