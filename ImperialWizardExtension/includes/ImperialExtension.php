@@ -83,9 +83,9 @@ class ImperialExtension
 
     public static function label($input, array $args, Parser $parser, PPFrame $frame)
     {
-        $out = '<span class="label';
+        $out = '<span class="badge';
         if (isset($args['type'])) {
-            $out .= ' label-' . $args['type'];
+            $out .= ' text-bg-' . $args['type'];
         }
         $out .= '">' . $parser->recursiveTagParse($input) . '</span>';
         return $out;
@@ -109,8 +109,8 @@ class ImperialExtension
 
     public static function navdropdown($input, array $args, Parser $parser, PPFrame $frame)
     {
-        $out = '<li class="dropdown">';
-        $out .= '<a class="dropdown-toggle" href="#" data-toggle="dropdown">' . $args['title'] . '<b class="caret"></b></a>';
+        $out = '<li class="nav-item dropdown">';
+        $out .= '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">' . $args['title'] . '</a>';
         $out .= '<ul class="dropdown-menu">';
         $out .= $parser->recursiveTagParse($input);
         $out .= "</ul></li>";
@@ -160,7 +160,16 @@ class ImperialExtension
             }
         }
 
-        return '<div class="' . $name . ($class ? ' ' . $class : '') . '">' . $parser->recursiveTagParse($input) . '</div>';
+        // Map legacy Bootstrap 2 tag names onto Bootstrap 5 class names.
+        if (preg_match('/^span([1-9]|1[0-2])$/', $name, $m)) {
+            $className = 'col-md-' . $m[1];
+        } elseif ($name === 'row-fluid') {
+            $className = 'row';
+        } else {
+            $className = $name;
+        }
+
+        return '<div class="' . $className . ($class ? ' ' . $class : '') . '">' . $parser->recursiveTagParse($input) . '</div>';
     }
 
     public static function onSkinEditSectionLinks($skin, $title, $section, $tooltip, &$links, $lang)
