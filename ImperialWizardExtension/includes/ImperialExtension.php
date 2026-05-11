@@ -7,7 +7,6 @@ use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
 use StripState;
-use Xml;
 use Sanitizer;
 
 class ImperialExtension
@@ -230,7 +229,7 @@ class ImperialExtension
 
         self::ModifyLink($text, $mergedattribs, 1);
         if ($mergedattribs)
-            $attribsText = Xml::expandAttributes($mergedattribs);
+            $attribsText = Html::expandAttributes($mergedattribs);
 
         $link = sprintf('<a href="%s"%s>%s<i class="icon-share-alt"></i></a>', $url, $attribsText, $text);
 
