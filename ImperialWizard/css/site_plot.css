@@ -270,6 +270,7 @@ footer p {
 #toc {
     width: auto;
     float: right;
+    clear: right;
     margin-left: 10px;
     margin-bottom: 10px;
 }
