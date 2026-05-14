@@ -794,3 +794,9 @@ div.wikiEditor-ui-toolbar .group .label {
     --bs-alert-bg: #fff3cd;
     --bs-alert-border-color: #ffecb5;
 }
+
+/* Make the alert a block formatting context so its background sits beside any
+   floats rather than extending behind them. */
+.alert {
+    display: flow-root;
+}
