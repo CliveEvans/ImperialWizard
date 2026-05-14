@@ -140,16 +140,20 @@ h3, h4, h5, h6 {
     line-height: 1.3em;
 }
 
+/* Bullets render inside the LI content area (so they sit inside the column),
+   and each nested level adds only the 15px margin — matching the BS2 era. */
 ul {
     list-style-position: inside;
     margin-left: 15px;
+    padding-left: 0;
 }
 
-/* Bootstrap 5 sets list padding-left to 2rem. Combined with our 15px
-   margin-left, nested levels compound at ~47px each (vs ~15px in the old
-   BS2 theme). Zero the padding so each level adds just the 15px margin. */
-ul, ol {
-    padding-left: 0;
+/* Numbered lists keep the default outside list-style-position, so we need
+   enough padding-left for the numbers to sit inside the content area rather
+   than spill into the margin. Each nested level adds this 30px step. */
+ol {
+    padding-left: 30px;
+    margin-left: 0;
 }
 
 
