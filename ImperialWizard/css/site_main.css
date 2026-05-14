@@ -19,6 +19,11 @@ html {
    on macOS, Segoe UI on Windows) — a noticeable change from Helvetica. */
 :root {
     --bs-body-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* Bootstrap 5's reboot sets `scroll-behavior: smooth` globally, which makes
+       every programmatic scroll (saving an edit, hash-link navigation, etc.)
+       animate slowly — disorienting on a wiki where you want to land where you
+       were. Restore instant scroll. */
+    scroll-behavior: auto;
 }
 
 body {
