@@ -141,8 +141,6 @@ class ImperialWizardTemplate extends BaseTemplate
 
         $html .= $this->getCategories();
 
-        $html .= Html::openElement('div', ['class' => 'row']);
-
         $html .= $this->data['sitenotice'] ? Html::rawElement('div', ['class' => 'alert alert-warning'], $this->data['sitenotice']) : '';
 
         $html .= Html::openElement('div', ['id' => 'page-title', 'class' => 'page-header']);
@@ -158,15 +156,12 @@ class ImperialWizardTemplate extends BaseTemplate
 
         $html .= Html::closeElement('div'); // page-header
         $html .= '<!-- end page-header -->';
-        $html .= Html::closeElement('div'); // row
 
         // the actual page content ...
 
-        $html .= Html::rawElement('div', ['class' => 'row'],
-            $this->get('bodytext') .
-            Html::rawElement('hr') .
-            Html::rawElement('small', [], $this->getCredits())
-        );
+        $html .= $this->get('bodytext');
+        $html .= Html::rawElement('hr');
+        $html .= Html::rawElement('small', [], $this->getCredits());
 
         $html .= Html::closeElement('div'); // col-md-10
 
