@@ -129,7 +129,7 @@ class ImperialWizardTemplate extends BaseTemplate
         // the page on phones. d-md-block keeps the content always visible at
         // md+ regardless of the collapse state.
         $html .= Html::rawElement('button', [
-            'class' => 'btn btn-secondary d-md-none w-100 mb-2',
+            'class' => 'btn sidebar-toggle d-md-none mb-2',
             'type' => 'button',
             'data-bs-toggle' => 'collapse',
             'data-bs-target' => '#leftbar-content',
