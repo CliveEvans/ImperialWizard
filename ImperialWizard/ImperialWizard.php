@@ -124,6 +124,21 @@ class ImperialWizardTemplate extends BaseTemplate
         $html .= Html::openElement('div', ['class' => 'row']); // outer row
         $html .= Html::openElement('div', ['id' => 'leftbar', 'class' => 'col-md-2']);
 
+        // Below the md breakpoint the sidebar stacks full-width above the
+        // content; collapse it behind a toggle button so it doesn't dominate
+        // the page on phones. d-md-block keeps the content always visible at
+        // md+ regardless of the collapse state.
+        $html .= Html::rawElement('button', [
+            'class' => 'btn btn-secondary d-md-none w-100 mb-2',
+            'type' => 'button',
+            'data-bs-toggle' => 'collapse',
+            'data-bs-target' => '#leftbar-content',
+            'aria-expanded' => 'false',
+            'aria-controls' => 'leftbar-content',
+        ], 'Show navigation');
+
+        $html .= Html::openElement('div', ['id' => 'leftbar-content', 'class' => 'collapse d-md-block']);
+
         $logo = MediaWikiServices::getInstance()->getRepoGroup()->findFile(Title::makeTitle(NS_FILE, 'Logo.jpg'));
         if ($logo) {
             $html .= Html::rawElement('div', ['id' => 'logo'], Html::rawElement('img', ['src' => $logo->getUrl()]));
@@ -134,6 +149,8 @@ class ImperialWizardTemplate extends BaseTemplate
         }
 
         $html .= Html::rawElement('div', ['class' => 'well sidebar-nav'], $this->includePage('Imperial:LeftBar'));
+
+        $html .= Html::closeElement('div'); // leftbar-content
 
         $html .= Html::closeElement('div'); // col-md-2
 
