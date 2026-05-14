@@ -83,9 +83,17 @@ class ImperialExtension
 
     public static function label($input, array $args, Parser $parser, PPFrame $frame)
     {
+        // Wikitext uses Bootstrap 2 label-type names; remap onto BS5's text-bg-* set.
+        $typeMap = [
+            'default'   => 'secondary',
+            'important' => 'danger',
+            'inverse'   => 'dark',
+        ];
+
         $out = '<span class="badge';
         if (isset($args['type'])) {
-            $out .= ' text-bg-' . $args['type'];
+            $type = $typeMap[$args['type']] ?? $args['type'];
+            $out .= ' text-bg-' . $type;
         }
         $out .= '">' . $parser->recursiveTagParse($input) . '</span>';
         return $out;
