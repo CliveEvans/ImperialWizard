@@ -125,6 +125,13 @@ ul {
     margin-left: 15px;
 }
 
+/* Bootstrap 5 sets list padding-left to 2rem. Combined with our 15px
+   margin-left, nested levels compound at ~47px each (vs ~15px in the old
+   BS2 theme). Zero the padding so each level adds just the 15px margin. */
+ul, ol {
+    padding-left: 0;
+}
+
 
 body, p {
     font-size: 16px;
