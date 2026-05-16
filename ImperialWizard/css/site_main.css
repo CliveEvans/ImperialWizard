@@ -1016,15 +1016,6 @@ div.slice-vertical {
     background-color: #f5f5f5;
 }
 
-/* site.js wraps each content table in <div class="table-responsive">, which
-   has overflow-x: auto. But Bootstrap 5's .table { width: 100% } forces the
-   table to fit the wrapper exactly — so there's nothing for the wrapper to
-   scroll, and wide cell content just visually clips. Letting the table grow
-   to its content width gives the wrapper something to actually scroll. */
-.table-responsive > table {
-    min-width: max-content;
-}
-
 /* Bootstrap 2 made plain .alert (and combinations like alert-block /
    alert-message / warning) default to yellow. In Bootstrap 5 bare .alert is
    transparent — restore the legacy yellow unless an explicit BS5 variant
